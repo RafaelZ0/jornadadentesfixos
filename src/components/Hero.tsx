@@ -9,6 +9,8 @@ import { evento } from "@/config/evento";
 
 const FOTO = "/images/dr-pablo-hero.jpg";
 const temFoto = existsSync(path.join(process.cwd(), "public", FOTO));
+// Em produção, sem a foto, o espaço some: a página nunca vai ao ar com um buraco.
+const mostrarFoto = temFoto || process.env.NODE_ENV !== "production";
 
 export function Hero() {
   return (
@@ -20,7 +22,9 @@ export function Hero() {
       </p>
 
       <section className="bg-paper pt-5 pb-10 md:pt-14 md:pb-20">
-        <Container className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:gap-x-16 md:gap-y-8">
+        <Container
+          className={`grid grid-cols-[minmax(0,1fr)] gap-3 md:gap-x-16 md:gap-y-8 ${mostrarFoto ? "md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]" : ""}`}
+        >
           <div className="flex flex-col gap-3 md:gap-6 md:self-end">
             <Heading nivel={1} tamanho="hero">
               {evento.promessa}
@@ -32,22 +36,24 @@ export function Hero() {
             </Text>
           </div>
 
-          <figure className="relative m-0 aspect-[2/1] overflow-hidden rounded-card md:col-start-2 md:row-span-2 md:row-start-1 md:aspect-[4/5]">
-            {temFoto ? (
-              <Image
-                src={FOTO}
-                alt={`${evento.responsavelTecnico.nome} na clínica`}
-                fill
-                preload
-                sizes="(min-width: 768px) 460px, calc(100vw - 40px)"
-                className="object-cover object-[50%_25%]"
-              />
-            ) : (
-              <div className="flex size-full items-center justify-center border-2 border-dashed border-edge bg-paper-2 p-4 text-center text-sm leading-[1.4] text-ink-2">
-                Foto do {evento.responsavelTecnico.nome} na clínica
-              </div>
-            )}
-          </figure>
+          {mostrarFoto && (
+            <figure className="relative m-0 aspect-[2/1] overflow-hidden rounded-card md:col-start-2 md:row-span-2 md:row-start-1 md:aspect-[4/5]">
+              {temFoto ? (
+                <Image
+                  src={FOTO}
+                  alt={`${evento.responsavelTecnico.nome} na clínica`}
+                  fill
+                  preload
+                  sizes="(min-width: 768px) 460px, calc(100vw - 40px)"
+                  className="object-cover object-[50%_25%]"
+                />
+              ) : (
+                <div className="flex size-full items-center justify-center border-2 border-dashed border-edge bg-paper-2 p-4 text-center text-sm leading-[1.4] text-ink-2">
+                  Foto do {evento.responsavelTecnico.nome} na clínica
+                </div>
+              )}
+            </figure>
+          )}
 
           <div className="flex flex-col gap-2 md:items-start md:self-start">
             <Button href="#inscricao">Quero assistir à aula gratuita</Button>

@@ -21,7 +21,7 @@ export function TituloObrigado() {
   );
 
   return (
-    <Heading nivel={1} tamanho="hero">
+    <Heading nivel={1} tamanho="hero" className="min-h-[2.2em] sm:min-h-0">
       {nome ? `${nome}, falta só 1 passo!` : "Falta só 1 passo!"}
     </Heading>
   );

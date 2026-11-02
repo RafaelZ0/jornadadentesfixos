@@ -19,5 +19,5 @@ export function MetaPixel() {
 
   if (!liberado) return null;
 
-  return <Script src={URL_SCRIPT_PIXEL} strategy="afterInteractive" />;
+  return <Script src={URL_SCRIPT_PIXEL} strategy="lazyOnload" />;
 }

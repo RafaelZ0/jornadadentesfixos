@@ -49,7 +49,7 @@ function validar(campo: Campo, valores: Valores) {
 }
 
 const estiloCampo =
-  "min-h-14 w-full rounded-control border-2 border-edge bg-surface px-4 text-md text-ink transition-colors duration-(--dur-micro) ease-out placeholder:text-ink-2 aria-invalid:border-error";
+  "min-h-14 w-full rounded-control border-2 border-edge bg-surface px-4 text-md text-ink transition-colors duration-(--dur-micro) ease-out placeholder:text-edge aria-invalid:border-error";
 
 function Campo({
   rotulo,
@@ -254,7 +254,7 @@ export function LeadForm() {
             }
             checked={valores.consentimento}
             onChange={(e) => atualizar("consentimento", e.target.checked)}
-            className="mt-0.5 size-7 shrink-0 cursor-pointer accent-action"
+            className="mt-0.5 size-8 shrink-0 cursor-pointer accent-action"
           />
           <label
             htmlFor={idConsentimento}

@@ -16,24 +16,30 @@ const destaques = [
 export function SecaoProfessor() {
   const { nome, titulo, cro, textoPessoal, equipe } = evento.responsavelTecnico;
   const emDesenvolvimento = process.env.NODE_ENV !== "production";
+  const temFoto = temArquivo("/images/dr-pablo-sobre.jpg");
+  const mostrarFoto = temFoto || emDesenvolvimento;
   const fotosDaEquipe = equipe.filter((pessoa) => temArquivo(pessoa.foto));
 
   return (
     <Section>
-      <Container className="grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-x-16">
-        <Heading nivel={2} className="md:col-start-2">
+      <Container
+        className={`grid grid-cols-[minmax(0,1fr)] gap-6 md:gap-x-16 ${mostrarFoto ? "md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" : "md:max-w-[calc(var(--measure)+2*var(--gutter))]"}`}
+      >
+        <Heading nivel={2} className={mostrarFoto ? "md:col-start-2" : ""}>
           Quem vai te ensinar
         </Heading>
 
-        <Foto
-          src="/images/dr-pablo-sobre.jpg"
-          alt={nome}
-          sizes="(min-width: 768px) 440px, calc(100vw - 40px)"
-          reserva={`Foto do ${nome}`}
-          className="aspect-[4/5] md:col-start-1 md:row-span-2 md:row-start-1"
-        />
+        {mostrarFoto && (
+          <Foto
+            src="/images/dr-pablo-sobre.jpg"
+            alt={nome}
+            sizes="(min-width: 768px) 440px, calc(100vw - 40px)"
+            reserva={`Foto do ${nome}`}
+            className="aspect-[4/5] md:col-start-1 md:row-span-2 md:row-start-1"
+          />
+        )}
 
-        <div className="flex flex-col gap-6 md:col-start-2">
+        <div className={`flex flex-col gap-6 ${mostrarFoto ? "md:col-start-2" : ""}`}>
           <div>
             <Heading nivel={3}>{nome}</Heading>
             <Text className="mt-1 text-ink-2">{titulo}</Text>

@@ -21,9 +21,21 @@ const atkinson = Atkinson_Hyperlegible({
   display: "swap",
 });
 
+const descricao = `Aula gratuita e ao vivo com o ${evento.responsavelTecnico.nome}: entenda os 3 passos para trocar a dentadura por dentes fixos. Terça, 24/11, às 19h30.`;
+
 export const metadata: Metadata = {
-  title: evento.nome,
-  description: `Aula gratuita e ao vivo: ${evento.aula.titulo}. Com o ${evento.responsavelTecnico.nome}, em Cachoeiro de Itapemirim.`,
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
+  title: { default: evento.nome, template: `%s | ${evento.nomeCurto}` },
+  description: descricao,
+  openGraph: {
+    title: evento.aula.titulo,
+    description: descricao,
+    siteName: evento.nomeCurto,
+    locale: "pt_BR",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
