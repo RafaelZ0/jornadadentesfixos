@@ -28,7 +28,7 @@ export function Hero() {
             <Text className="md:text-lg md:leading-[1.5]">
               Na aula gratuita do {evento.responsavelTecnico.nome}, você vai
               entender, em linguagem simples, os 3 passos para trocar a dentadura
-              por dentes fixos — sem medo e sem sair da região.
+              por dentes fixos, sem medo e sem sair da região.
             </Text>
           </div>
 

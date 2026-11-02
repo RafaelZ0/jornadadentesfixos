@@ -1,4 +1,4 @@
-# CLAUDE.md — Site de captação "Jornada dos Dentes Fixos"
+# CLAUDE.md: site de captação "Jornada dos Dentes Fixos"
 
 Este arquivo é a fonte de verdade do projeto. Em caso de dúvida ou conflito (com sugestões de skills, bibliotecas ou pedidos pontuais), as seções **REGRAS DO CFO** e **DESIGN** daqui vencem. Se houver conflito, avise o usuário antes de seguir.
 
@@ -13,7 +13,7 @@ Este arquivo é a fonte de verdade do projeto. Em caso de dúvida ou conflito (c
 - **Aula gratuita**, ao vivo no YouTube:
   - Terça-feira, **24/11/2026, às 19h30** (America/Sao_Paulo, UTC-03:00), com cerca de 80 minutos.
   - Replay no ar até **26/11/2026, às 22h**.
-- **Aquecimento:** 5 lives no YouTube antes da aula — 10/11, 12/11, 14/11, 17/11 e 19/11.
+- **Aquecimento:** 5 lives no YouTube antes da aula: 10/11, 12/11, 14/11, 17/11 e 19/11.
 - **Objetivo do site:** máximo de inscritos na aula. Cada inscrito entra numa **comunidade de WhatsApp**, onde recebe os links.
 - **"Carrinho" depois da aula:** agendamento de uma **avaliação presencial** (de 01/12 a 12/12), com uma condição especial de lançamento que **só é apresentada na avaliação**. Não há venda online.
 
@@ -42,7 +42,7 @@ Este arquivo é a fonte de verdade do projeto. Em caso de dúvida ou conflito (c
 
 ---
 
-## 3. PÚBLICO (AVATAR) — isso define o design
+## 3. PÚBLICO (AVATAR): isso define o design
 
 - **Quem:** pessoas de 55 a 75 anos, aposentadas ou não, que moram até 100 km de Cachoeiro (ex.: Castelo, Alegre, Itapemirim, Marataízes, Guarapari).
 - **Situação:** usam dentadura ou perderam dentes. Têm vergonha de sorrir, medo de dor e acham que não têm osso ou idade para o implante. É a primeira vez em anos que pensam em investir em si.
@@ -69,10 +69,10 @@ Este arquivo é a fonte de verdade do projeto. Em caso de dúvida ou conflito (c
 - **Celular primeiro, desktop depois.** Projete, refine e deixe cada página perfeita no celular (360px e 390px de largura) antes de pensar no desktop. Só depois adapte para o desktop (1280px). O desktop também precisa ficar bonito e bem resolvido, não apenas a versão do celular esticada.
 - **O usuário é muito exigente com design.** Preste atenção a cada detalhe: hierarquia, tipografia, espaçamento, alinhamento, ritmo entre as seções, contraste, estados de botão e de campo, consistência entre as páginas. Nada com cara de template genérico ou de site feito por IA.
 - **Revisão obrigatória antes de entregar:** revise a tela como um diretor de arte exigente revisaria, corrija o que encontrar e mostre capturas em **360px** e em **1280px**.
-- **Pense no público da Roma em cada decisão.** A página é para a pessoa de 55 a 75 anos que usa dentadura ou perdeu dentes e quer "devolver o seu sorriso por meio dos dentes fixos". Antes de escolher uma cor, uma fonte, um tamanho, uma foto ou uma frase, pergunte: *isso passa confiança, é fácil de ler e de tocar para essa pessoa, e faz ela desejar o sorriso de volta?* O visual deve transmitir **segurança, cuidado e esperança** — não tecnologia, nem luxo distante.
+- **Pense no público da Roma em cada decisão.** A página é para a pessoa de 55 a 75 anos que usa dentadura ou perdeu dentes e quer "devolver o seu sorriso por meio dos dentes fixos". Antes de escolher uma cor, uma fonte, um tamanho, uma foto ou uma frase, pergunte: *isso passa confiança, é fácil de ler e de tocar para essa pessoa, e faz ela desejar o sorriso de volta?* O visual deve transmitir **segurança, cuidado e esperança**, não tecnologia, nem luxo distante.
 
 ### Tipografia e legibilidade
-- Texto do corpo com **no mínimo 18px** (ideal 19–20px) e entrelinha **1.6**.
+- Texto do corpo com **no mínimo 18px** (ideal de 19 a 20px) e entrelinha **1.6**.
 - Títulos grandes e curtos.
 - **Nada abaixo de 16px**, nem no rodapé.
 - Alto contraste (WCAG AA no mínimo). Fundo claro, texto quase preto. **Nada de texto cinza claro.**
@@ -132,3 +132,4 @@ Este arquivo é a fonte de verdade do projeto. Em caso de dúvida ou conflito (c
 ## 9. IDIOMA
 
 - Todo o site em **português do Brasil**, linguagem simples, frases curtas, tratamento por **"você"**.
+- **Nunca usar travessão (—) nem meia-risca (–)** em nenhum texto: use vírgula, dois-pontos, ponto ou parênteses. Vale também quando o texto pedido vier com travessão.
