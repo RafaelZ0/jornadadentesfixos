@@ -10,7 +10,7 @@ type ButtonProps = ComponentProps<"button"> & {
 };
 
 const base =
-  "inline-flex min-h-15 w-full items-center justify-center gap-3 rounded-control px-8 py-3 text-center font-body text-md leading-tight font-bold tracking-wide uppercase no-underline transition-colors duration-(--dur-micro) ease-out focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-focus sm:w-auto";
+  "inline-flex min-h-15 w-full items-center justify-center gap-3 rounded-control px-5 py-3 text-center font-body text-md leading-tight font-bold tracking-wide uppercase no-underline transition-colors duration-(--dur-micro) ease-out focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-focus sm:w-auto";
 
 const ativo =
   "cursor-pointer bg-action text-on-action hover:bg-action-hover active:translate-y-px active:bg-action-hover";

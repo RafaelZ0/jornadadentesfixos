@@ -2,11 +2,12 @@ import type { ComponentProps } from "react";
 
 type HeadingProps = ComponentProps<"h1"> & {
   nivel?: 1 | 2 | 3;
-  tamanho?: "convite" | "manchete" | "secao" | "titulo";
+  tamanho?: "convite" | "hero" | "manchete" | "secao" | "titulo";
 };
 
 const tamanhos = {
   convite: "text-invite leading-[1.04]",
+  hero: "text-hero leading-[1.1]",
   manchete: "text-display leading-[1.12]",
   secao: "text-section leading-[1.18]",
   titulo: "text-title leading-[1.25]",

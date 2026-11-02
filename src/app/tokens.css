@@ -6,6 +6,7 @@
   --text-title: clamp(1.5625rem, 1.5rem + 0.25vw, 1.75rem);
   --text-section: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
   --text-display: clamp(2.5rem, 1.75rem + 3.2vw, 4rem);
+  --text-hero: clamp(2.25rem, 1.6rem + 3.2vw, 3.75rem);
   --text-invite: clamp(3.25rem, 2.25rem + 5vw, 6rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
@@ -72,4 +73,18 @@
   --color-action: #fbf7f0;
   --color-action-hover: #ffffff;
   --color-on-action: #0b5f30;
+}
+
+/* Cartão claro dentro da faixa: devolve os papéis originais. */
+.surface-card {
+  --color-ink: #1c1a17;
+  --color-ink-2: #4a443c;
+  --color-muted: #4a443c;
+  --color-rule: #e3dacb;
+  --color-paper-3: #e9dfcf;
+  --color-accent: #8f3f1e;
+  --color-focus: #1c1a17;
+  --color-action: #0f7a3e;
+  --color-action-hover: #0b5f30;
+  --color-on-action: #ffffff;
 }

@@ -5,33 +5,12 @@ import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
 import { evento } from "@/config/evento";
+import { dataDaAula, diaDaAula, horaDaAula } from "@/lib/datas";
 
 export const metadata: Metadata = {
   title: "Guia de estilo",
   robots: { index: false, follow: false },
 };
-
-const inicio = new Date(evento.aula.inicio);
-const fuso = { timeZone: evento.fusoHorario };
-
-const diaEMes = new Intl.DateTimeFormat("pt-BR", {
-  ...fuso,
-  day: "numeric",
-  month: "long",
-}).format(inicio);
-
-const diaDaSemana = new Intl.DateTimeFormat("pt-BR", {
-  ...fuso,
-  weekday: "long",
-}).format(inicio);
-
-const hora = new Intl.DateTimeFormat("pt-BR", {
-  ...fuso,
-  hour: "2-digit",
-  minute: "2-digit",
-})
-  .format(inicio)
-  .replace(":", "h");
 
 const cores = [
   { nome: "Fundo creme", hex: "#FBF7F0", uso: "Fundo das páginas", classe: "bg-paper border border-edge" },
@@ -60,10 +39,10 @@ export default function EstiloPage() {
               Aula gratuita, ao vivo no {evento.aula.plataforma}
             </Text>
             <Heading nivel={1} tamanho="convite">
-              {diaEMes}
+              {dataDaAula}
             </Heading>
             <Text tipo="abertura" className="mt-3 font-display font-semibold">
-              {diaDaSemana}, às {hora}
+              {diaDaAula}, às {horaDaAula}
             </Text>
           </div>
           <div className="flex flex-col gap-6">

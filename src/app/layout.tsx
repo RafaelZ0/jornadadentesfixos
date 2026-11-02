@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible, Literata } from "next/font/google";
+import { CapturaOrigem } from "@/components/CapturaOrigem";
 import { Footer } from "@/components/Footer";
 import { evento } from "@/config/evento";
 import "./globals.css";
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-dvh flex-col">
         <main className="flex-1">{children}</main>
         <Footer />
+        <CapturaOrigem />
       </body>
     </html>
   );

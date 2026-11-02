@@ -36,6 +36,7 @@ O sistema travado do projeto. Toda página e toda execução da hallmark leem es
 
 | Papel | Celular | Desktop | Peso | Entrelinha |
 | --- | --- | --- | --- | --- |
+| Hero (h1 da inscrição) | 37px | 60px | 600 | 1.1 |
 | Manchete (h1) | 40px | 64px | 600 | 1.12 |
 | Seção (h2) | 32px | 44px | 600 | 1.18 |
 | Título (h3) | 25px | 28px | 600 | 1.25 |
@@ -77,6 +78,7 @@ Visual aprovado pelo usuário em 02/11/2026 na página `/estilo`, com creme, ter
 - **Caixa alta no botão:** a hallmark proíbe rótulos em caixa alta; o projeto pede. Mantida só no botão.
 - **Creme, serifa e terracota (portão 65):** é a combinação que a hallmark considera mais associada a sites feitos por IA. A paleta está fixada no `CLAUDE.md`. A Literata é uma serifa de baixo contraste e o terracota fica como sinal raro; o verde-escuro carrega o peso.
 - **Tamanhos de botão:** 60px, acima dos 44 a 52px da hallmark.
+- **Faixa do topo:** caixa alta com ponto central, com o texto pedido pelo usuário. A hallmark proíbe os dois.
 
 ## Exportações
 
