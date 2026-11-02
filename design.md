@@ -67,6 +67,11 @@ O sistema travado do projeto. Toda página e toda execução da hallmark leem es
 - Calmo. Só um fade curto ao rolar, sem deslocamento perceptível, e nenhum sob `prefers-reduced-motion`.
 - Sem carrossel, pop-up, parallax ou contador piscando. Conteúdo visível sem JavaScript.
 
+## Seções
+
+- Fundos alternados: creme, creme mais escuro (`bg-paper-2`) e faixa verde só nos dois formulários e no cartão da aula.
+- Cada seção termina em um botão com texto próprio, levando ao formulário mais próximo.
+
 ## Fotos
 
 - Fotos reais da clínica e do Dr. Pablo, grandes, com gente de verdade e luz natural. Nada de banco de imagens de sorriso branco, nada de antes e depois.

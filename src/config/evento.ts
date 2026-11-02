@@ -1,5 +1,7 @@
 // Único ponto de configuração do site. Nada destes dados deve ser repetido no código.
 
+export type FormatoVideo = "9:16" | "4:5" | "16:9";
+
 export const evento = {
   nome: "Jornada dos Dentes Fixos: Seu Sorriso Transformado",
   nomeCurto: "Jornada dos Dentes Fixos",
@@ -28,6 +30,12 @@ export const evento = {
     fim: "2026-12-12",
   },
 
+  videoConvite: {
+    id: process.env.NEXT_PUBLIC_VIDEO_CONVITE_ID ?? "",
+    formato: "9:16" as FormatoVideo,
+    capa: "/images/capa-video.jpg",
+  },
+
   whatsapp: {
     clinicaExibicao: "(28) 99257-4073",
     clinicaE164: "5528992574073",
@@ -52,6 +60,12 @@ export const evento = {
     nome: "Dr. Pablo Santos",
     titulo: "Doutor e Especialista em Implantodontia",
     cro: "CRO-ES 005206",
+    // Parágrafo em primeira pessoa, escrito pelo Dr. Pablo. Vazio: não aparece em produção.
+    textoPessoal: "",
+    equipe: [
+      { nome: "Dra. Melissa", foto: "/images/dra-melissa.jpg" },
+      { nome: "Dra. Mariana", foto: "/images/dra-mariana.jpg" },
+    ],
   },
 
   cidadesDaRegiao: [

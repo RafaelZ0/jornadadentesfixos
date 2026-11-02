@@ -31,21 +31,34 @@ export function BarraFixaInscricao() {
     const rodape = document.querySelector("footer");
     if (lista.length === 0) return;
 
-    const naTela = new Set<Element>();
+    let quadro = 0;
 
-    const observador = new IntersectionObserver((entradas) => {
-      for (const entrada of entradas) {
-        if (entrada.isIntersecting) naTela.add(entrada.target);
-        else naTela.delete(entrada.target);
-      }
+    function naTela(elemento: Element) {
+      const { top, bottom } = elemento.getBoundingClientRect();
+      return top < window.innerHeight && bottom > 0;
+    }
+
+    function atualizar() {
+      quadro = 0;
       const passouDoPrimeiro = lista[0].getBoundingClientRect().bottom < 0;
-      setVisivel(passouDoPrimeiro && naTela.size === 0);
-    });
+      const algoNaTela =
+        lista.some(naTela) || (rodape !== null && naTela(rodape));
+      setVisivel(passouDoPrimeiro && !algoNaTela);
+    }
 
-    lista.forEach((formulario) => observador.observe(formulario));
-    if (rodape) observador.observe(rodape);
+    // Rolagem, e não IntersectionObserver: uma rolagem rápida pode pular o formulário inteiro.
+    function agendar() {
+      quadro ||= requestAnimationFrame(atualizar);
+    }
 
-    return () => observador.disconnect();
+    window.addEventListener("scroll", agendar, { passive: true });
+    window.addEventListener("resize", agendar);
+
+    return () => {
+      cancelAnimationFrame(quadro);
+      window.removeEventListener("scroll", agendar);
+      window.removeEventListener("resize", agendar);
+    };
   }, []);
 
   if (!visivel) return null;
