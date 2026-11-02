@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible, Literata } from "next/font/google";
+import { AvisoCookies } from "@/components/AvisoCookies";
 import { CapturaOrigem } from "@/components/CapturaOrigem";
 import { Footer } from "@/components/Footer";
+import { MetaPixel } from "@/components/rastreamento/MetaPixel";
 import { evento } from "@/config/evento";
 import "./globals.css";
 
@@ -39,6 +41,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
         <Footer />
         <CapturaOrigem />
+        <MetaPixel />
+        <AvisoCookies />
       </body>
     </html>
   );

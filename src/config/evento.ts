@@ -30,6 +30,12 @@ export const evento = {
     fim: "2026-12-12",
   },
 
+  meta: {
+    pixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "",
+    exigeConsentimento: process.env.NEXT_PUBLIC_PIXEL_REQUIRE_CONSENT === "true",
+    versaoGraph: "v26.0",
+  },
+
   videoConvite: {
     id: process.env.NEXT_PUBLIC_VIDEO_CONVITE_ID ?? "",
     formato: "9:16" as FormatoVideo,

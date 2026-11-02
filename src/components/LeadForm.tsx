@@ -11,9 +11,11 @@ import {
 } from "react";
 import { Button } from "@/components/ui/Button";
 import { evento } from "@/config/evento";
+import { aceitouCookies } from "@/lib/consentimento";
 import { enviarInscricao } from "@/lib/inscricao";
 import { mensagens } from "@/lib/mensagens";
 import { lerOrigem } from "@/lib/origem";
+import { guardarPrimeiroNome } from "@/lib/primeiro-nome";
 import {
   formatarWhatsapp,
   somenteDigitos,
@@ -168,14 +170,12 @@ export function LeadForm() {
         cidade: valores.cidade.trim(),
         consentimento: true,
         site: robo.value,
+        cookies_aceitos: aceitouCookies(),
       });
 
       if (resultado.ok) {
-        const parametros = new URLSearchParams({
-          eid: resultado.eventId,
-          nome: valores.nome.trim().split(/\s+/)[0],
-        });
-        router.push(`/obrigado?${parametros}`);
+        guardarPrimeiroNome(valores.nome);
+        router.push(`/obrigado?eid=${encodeURIComponent(resultado.eventId)}`);
         return;
       }
 

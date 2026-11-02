@@ -1,6 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jornada dos Dentes Fixos
 
-## Getting Started
+Site de captação da aula. Regras do projeto no `CLAUDE.md` e visual no `design.md`.
+
+## Consentimento de cookies
+
+`NEXT_PUBLIC_PIXEL_REQUIRE_CONSENT` define como o Pixel se comporta:
+
+- `false` (padrão): o Pixel carrega direto, e o aviso só informa.
+- `true`: o Pixel e o Lead da API de Conversões só acontecem depois do "Entendi".
+
+**Essa decisão é do jurídico.** Confirme antes de publicar e ajuste a variável na Vercel.
+
+## Comandos
 
 First, run the development server:
 

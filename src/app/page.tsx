@@ -1,5 +1,6 @@
 import { BarraFixaInscricao } from "@/components/BarraFixaInscricao";
 import { Hero } from "@/components/Hero";
+import { EventoInteresse } from "@/components/rastreamento/EventoInteresse";
 import { SecaoCasos } from "@/components/secoes/SecaoCasos";
 import { SecaoComoVaiSer } from "@/components/secoes/SecaoComoVaiSer";
 import { SecaoInscricao } from "@/components/secoes/SecaoInscricao";
@@ -17,6 +18,7 @@ import { dataDaAula, diaDaAula, horaDaAula } from "@/lib/datas";
 export default function Home() {
   return (
     <>
+      <EventoInteresse />
       <Hero />
 
       <SecaoInscricao id="inscricao">

@@ -7,6 +7,7 @@ export type Inscricao = Origem & {
   consentimento: true;
   /** Campo isca contra robôs. */
   site: string;
+  cookies_aceitos: boolean;
 };
 
 type Resultado =

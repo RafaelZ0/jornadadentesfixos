@@ -3,13 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { FormatoVideo } from "@/config/evento";
+import { rastrear } from "@/lib/pixel";
 import { proporcoes } from "@/lib/video";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 type VideoYoutubeProps = {
   id: string;
@@ -29,7 +24,7 @@ export function VideoYoutube({
   const [tocando, setTocando] = useState(false);
 
   function aoTocar() {
-    if (eventoPixel) window.fbq?.("trackCustom", eventoPixel);
+    if (eventoPixel) rastrear("trackCustom", eventoPixel);
     setTocando(true);
   }
 

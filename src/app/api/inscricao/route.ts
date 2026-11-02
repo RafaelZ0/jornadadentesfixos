@@ -1,8 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
+import { evento } from "@/config/evento";
 import { excedeuLimite } from "@/lib/limite";
 import { mensagens } from "@/lib/mensagens";
+import { enviarLeadMeta } from "@/lib/meta";
 import { somenteDigitos, whatsappValido } from "@/lib/whatsapp";
 
 const TIMEOUT_MS = 8000;
@@ -22,6 +24,8 @@ const esquema = z.object({
   utm_term: textoOpcional,
   fbclid: textoOpcional,
   url_origem: z.string().max(2000).optional(),
+  fbclid_em: z.number().int().positive().optional(),
+  cookies_aceitos: z.boolean().optional(),
 });
 
 type Lead = z.infer<typeof esquema> & { event_id: string };
@@ -92,6 +96,25 @@ export async function POST(request: NextRequest) {
   if (!(await salvarNaPlanilha(lead))) {
     // A pessoa segue em frente. O lead fica no log do servidor para recuperar depois.
     console.error("LEAD_NAO_SALVO", JSON.stringify(lead));
+  }
+
+  if (!evento.meta.exigeConsentimento || lead.cookies_aceitos) {
+    // Roda depois da resposta: a Meta não atrasa o formulário.
+    after(() =>
+      enviarLeadMeta({
+        eventId: event_id,
+        urlOrigem: lead.url_origem ?? request.headers.get("referer") ?? undefined,
+        whatsapp: lead.whatsapp,
+        nome: lead.nome,
+        cidade: lead.cidade,
+        ip,
+        userAgent: request.headers.get("user-agent") ?? undefined,
+        fbp: request.cookies.get("_fbp")?.value,
+        fbc: request.cookies.get("_fbc")?.value,
+        fbclid: lead.fbclid,
+        fbclidEm: lead.fbclid_em,
+      }),
+    );
   }
 
   return NextResponse.json({ ok: true, eventId: event_id });

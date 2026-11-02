@@ -61,10 +61,18 @@ export function BarraFixaInscricao() {
     };
   }, []);
 
+  // Avisa o aviso de cookies, que fica logo acima da barra.
+  useEffect(() => {
+    window.dispatchEvent(new Event("barra-fixa"));
+  }, [visivel]);
+
   if (!visivel) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-(--z-raised) border-t border-edge bg-paper px-(--gutter) pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
+    <div
+      data-barra-fixa
+      className="fixed inset-x-0 bottom-0 z-(--z-raised) border-t border-edge bg-paper px-(--gutter) pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
+    >
       <Button onClick={irParaFormularioMaisProximo}>
         Quero assistir à aula
       </Button>

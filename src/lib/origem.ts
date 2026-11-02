@@ -11,6 +11,8 @@ const PARAMETROS = [
 
 export type Origem = Partial<Record<(typeof PARAMETROS)[number], string>> & {
   url_origem?: string;
+  /** Quando o fbclid foi visto pela primeira vez, em milissegundos. */
+  fbclid_em?: number;
 };
 
 export function lerOrigem(): Origem {
@@ -34,6 +36,7 @@ export function capturarOrigem() {
       chegouComUtm = true;
     }
   }
+  if (origem.fbclid) origem.fbclid_em ??= Date.now();
   if (chegouComUtm || !origem.url_origem) origem.url_origem = url.href;
 
   try {

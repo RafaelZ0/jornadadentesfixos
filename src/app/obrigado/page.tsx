@@ -5,7 +5,6 @@ import { BotaoGrupo } from "@/components/obrigado/BotaoGrupo";
 import { EventoLead } from "@/components/obrigado/EventoLead";
 import { TituloObrigado } from "@/components/obrigado/TituloObrigado";
 import { Container } from "@/components/ui/Container";
-import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
 import { evento } from "@/config/evento";
@@ -36,15 +35,7 @@ export default function ObrigadoPage() {
 
       <Section className="pt-6 pb-12 md:pt-14">
         <Container largura="texto" className="flex flex-col gap-4">
-          <Suspense
-            fallback={
-              <Heading nivel={1} tamanho="hero">
-                Falta só 1 passo!
-              </Heading>
-            }
-          >
-            <TituloObrigado />
-          </Suspense>
+          <TituloObrigado />
 
           <div
             role="progressbar"
