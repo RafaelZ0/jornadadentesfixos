@@ -5,12 +5,23 @@ export type Inscricao = Origem & {
   whatsapp: string;
   cidade: string;
   consentimento: true;
+  /** Campo isca contra robôs. */
+  site: string;
 };
 
-// Simulação: o envio real para a rota de API entra na Parte 4.
-export async function enviarInscricao(inscricao: Inscricao) {
-  if (process.env.NODE_ENV === "development") {
-    console.debug("Inscrição simulada", inscricao);
-  }
-  await new Promise((resolve) => setTimeout(resolve, 900));
+type Resultado =
+  | { ok: true; eventId: string }
+  | { ok: false; erros?: Record<string, string> };
+
+export async function enviarInscricao(
+  inscricao: Inscricao,
+): Promise<Resultado> {
+  const resposta = await fetch("/api/inscricao", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(inscricao),
+    signal: AbortSignal.timeout(25_000),
+  });
+
+  return resposta.json();
 }

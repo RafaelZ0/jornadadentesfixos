@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { evento } from "@/config/evento";
 import { enviarInscricao } from "@/lib/inscricao";
+import { mensagens } from "@/lib/mensagens";
 import { lerOrigem } from "@/lib/origem";
 import {
   formatarWhatsapp,
@@ -34,22 +35,14 @@ const CAMPOS: Campo[] = ["nome", "whatsapp", "cidade", "consentimento"];
 function validar(campo: Campo, valores: Valores) {
   switch (campo) {
     case "nome":
-      return valores.nome.trim().length < 2
-        ? "Escreva o seu nome para continuarmos."
-        : undefined;
+      return valores.nome.trim().length < 2 ? mensagens.nome : undefined;
     case "whatsapp":
-      if (!valores.whatsapp) return "Escreva o seu WhatsApp com DDD.";
-      return whatsappValido(valores.whatsapp)
-        ? undefined
-        : "Confira o número: são 2 dígitos do DDD e 9 do celular, como (28) 99999-9999.";
+      if (!valores.whatsapp) return mensagens.whatsappVazio;
+      return whatsappValido(valores.whatsapp) ? undefined : mensagens.whatsapp;
     case "cidade":
-      return valores.cidade.trim().length < 2
-        ? "Escreva a sua cidade."
-        : undefined;
+      return valores.cidade.trim().length < 2 ? mensagens.cidade : undefined;
     case "consentimento":
-      return valores.consentimento
-        ? undefined
-        : "Para receber as informações da aula, marque esta caixa.";
+      return valores.consentimento ? undefined : mensagens.consentimento;
   }
 }
 
@@ -102,7 +95,7 @@ export function LeadForm() {
   const [erros, setErros] = useState<Erros>({});
   const [tocados, setTocados] = useState<Partial<Record<Campo, boolean>>>({});
   const [enviando, setEnviando] = useState(false);
-  const [erroEnvio, setErroEnvio] = useState("");
+  const [erroEnvio, setErroEnvio] = useState(false);
 
   function atualizar<C extends Campo>(campo: C, valor: Valores[C]) {
     const novos = { ...valores, [campo]: valor };
@@ -137,6 +130,15 @@ export function LeadForm() {
     });
   }
 
+  function liberar() {
+    travado.current = false;
+    setEnviando(false);
+  }
+
+  function focar(formulario: HTMLFormElement, campo: Campo) {
+    (formulario.elements.namedItem(campo) as HTMLInputElement).focus();
+  }
+
   async function aoEnviar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (travado.current) return;
@@ -148,35 +150,46 @@ export function LeadForm() {
 
     const primeiroInvalido = CAMPOS.find((campo) => novosErros[campo]);
     if (primeiroInvalido) {
-      const campo = formulario.elements.namedItem(primeiroInvalido);
-      (campo as HTMLInputElement).focus();
+      focar(formulario, primeiroInvalido);
       return;
     }
 
     travado.current = true;
     setEnviando(true);
-    setErroEnvio("");
+    setErroEnvio(false);
 
     const robo = formulario.elements.namedItem("site") as HTMLInputElement;
 
     try {
-      // Robô preencheu o campo escondido: segue como se tivesse dado certo, sem gravar nada.
-      if (!robo.value) {
-        await enviarInscricao({
-          ...lerOrigem(),
-          nome: valores.nome.trim(),
-          whatsapp: somenteDigitos(valores.whatsapp),
-          cidade: valores.cidade.trim(),
-          consentimento: true,
+      const resultado = await enviarInscricao({
+        ...lerOrigem(),
+        nome: valores.nome.trim(),
+        whatsapp: somenteDigitos(valores.whatsapp),
+        cidade: valores.cidade.trim(),
+        consentimento: true,
+        site: robo.value,
+      });
+
+      if (resultado.ok) {
+        const parametros = new URLSearchParams({
+          eid: resultado.eventId,
+          nome: valores.nome.trim().split(/\s+/)[0],
         });
+        router.push(`/obrigado?${parametros}`);
+        return;
       }
-      router.push("/obrigado");
+
+      liberar();
+      if (resultado.erros) {
+        setErros(resultado.erros);
+        const invalido = CAMPOS.find((campo) => resultado.erros?.[campo]);
+        if (invalido) focar(formulario, invalido);
+      } else {
+        setErroEnvio(true);
+      }
     } catch {
-      travado.current = false;
-      setEnviando(false);
-      setErroEnvio(
-        "Não conseguimos enviar agora. Confira a sua internet e tente de novo.",
-      );
+      liberar();
+      setErroEnvio(true);
     }
   }
 
@@ -285,7 +298,15 @@ export function LeadForm() {
 
       {erroEnvio && (
         <p role="alert" className="text-sm leading-[1.4] font-bold text-error">
-          {erroEnvio}
+          Não conseguimos enviar. Confira seu WhatsApp e tente de novo.{" "}
+          <a
+            href={`https://wa.me/${evento.whatsapp.clinicaE164}`}
+            target="_blank"
+            rel="noopener"
+            className="text-accent underline underline-offset-4"
+          >
+            Falar com a clínica no WhatsApp
+          </a>
         </p>
       )}
     </form>
