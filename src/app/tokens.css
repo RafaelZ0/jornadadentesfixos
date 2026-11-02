@@ -1,0 +1,75 @@
+@theme static {
+  --text-xs: 1rem;
+  --text-sm: 1.0625rem;
+  --text-md: clamp(1.1875rem, 1.15rem + 0.15vw, 1.25rem);
+  --text-lg: clamp(1.375rem, 1.3rem + 0.25vw, 1.5rem);
+  --text-title: clamp(1.5625rem, 1.5rem + 0.25vw, 1.75rem);
+  --text-section: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  --text-display: clamp(2.5rem, 1.75rem + 3.2vw, 4rem);
+  --text-invite: clamp(3.25rem, 2.25rem + 5vw, 6rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --color-paper: #fbf7f0;
+  --color-paper-2: #f4ecdf;
+  --color-paper-3: #e9dfcf;
+  --color-surface: #ffffff;
+  --color-ink: #1c1a17;
+  --color-ink-2: #4a443c;
+  --color-muted: #4a443c;
+  --color-rule: #e3dacb;
+  --color-edge: #7a6f60;
+  --color-accent: #8f3f1e;
+  --color-accent-ink: #fbf7f0;
+  --color-focus: #1c1a17;
+  --color-action: #0f7a3e;
+  --color-action-hover: #0b5f30;
+  --color-on-action: #ffffff;
+  --color-field: #23413a;
+  --color-on-field: #fbf7f0;
+  --color-error: #b3261e;
+  --font-display: var(--font-literata), Georgia, ui-serif, serif;
+  --font-body: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --shadow-card: 0 1px 2px oklch(25% 0.02 70 / 0.08);
+  --tracking-display: -0.015em;
+}
+:root {
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 144px;
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+  --container: 1120px;
+  --measure: 680px;
+  --gutter: 40px;
+  --gap-columns: 32px;
+  --section-gap: 112px;
+  --z-base: 1;
+  --z-raised: 10;
+  --rule-hair: 1px;
+}
+@media (max-width: 40rem) { :root { --gutter: 20px; --section-gap: 64px; --gap-columns: 16px; } }
+
+/* A faixa de destaque troca os papéis, e tudo dentro dela acompanha. */
+.section-field {
+  --color-ink: #fbf7f0;
+  --color-ink-2: #e9dfcf;
+  --color-muted: #e9dfcf;
+  --color-rule: #4b6660;
+  --color-paper-3: #3a5750;
+  --color-accent: #f2c9a8;
+  --color-focus: #fbf7f0;
+  --color-action: #fbf7f0;
+  --color-action-hover: #ffffff;
+  --color-on-action: #0b5f30;
+}
