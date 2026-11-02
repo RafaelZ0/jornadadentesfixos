@@ -97,6 +97,13 @@ export const evento = {
     "Alfredo Chaves",
   ],
 
+  legal: {
+    rascunho: process.env.NEXT_PUBLIC_LEGAL_DRAFT === "true",
+    atualizadoEm: "2 de novembro de 2026",
+    prazoGuarda: "[PRAZO]",
+    canalPrivacidade: "[E-MAIL OU WHATSAPP DE PRIVACIDADE]",
+  },
+
   rotas: {
     termos: "/termos",
     privacidade: "/privacidade",
