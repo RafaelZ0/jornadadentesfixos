@@ -30,7 +30,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${literata.variable} ${atkinson.variable}`}>
+    <html
+      lang="pt-BR"
+      data-scroll-behavior="smooth"
+      className={`${literata.variable} ${atkinson.variable}`}
+    >
       <body className="flex min-h-dvh flex-col">
         <main className="flex-1">{children}</main>
         <Footer />
