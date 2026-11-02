@@ -12,4 +12,4 @@ Base: https://jornadadentesfixos.vercel.app/
 | grupo-whatsapp | https://jornadadentesfixos.vercel.app/?utm_source=grupo-whatsapp&utm_medium=whatsapp&utm_campaign=jornada-dentes-fixos |
 | crc | https://jornadadentesfixos.vercel.app/?utm_source=crc&utm_medium=atendimento&utm_campaign=jornada-dentes-fixos |
 
-> Provisório: estes links usam o endereço da Vercel. Gere de novo quando o domínio final existir, antes de imprimir qualquer QR code.
+> Endereço definitivo do site: não precisa gerar de novo.
