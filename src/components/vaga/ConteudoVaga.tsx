@@ -1,96 +1,124 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { IconeWhatsapp } from "@/components/IconeWhatsapp";
-import { Condicao } from "@/components/replay/Condicao";
-import { useFaseReplay } from "@/components/replay/useFaseReplay";
+import { useVagasEncerradas } from "@/components/replay/useFaseReplay";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
 import { Text } from "@/components/ui/Text";
+import { FormVaga } from "@/components/vaga/FormVaga";
 import { evento } from "@/config/evento";
 import { porExtenso } from "@/lib/datas";
 import { rastrear } from "@/lib/pixel";
 
-const fimVaga = porExtenso(evento.replay.fimVaga);
 // Datas sem hora: meio-dia evita cair no dia anterior por causa do fuso.
 const avaliacao = {
   inicio: porExtenso(`${evento.avaliacaoPresencial.inicio}T12:00:00-03:00`),
   fim: porExtenso(`${evento.avaliacaoPresencial.fim}T12:00:00-03:00`),
 };
-const cidade = evento.clinica.endereco.cidade;
+const { retornoMinutos, mesListaDeEspera } = evento.vaga;
 
-const passos = [
-  "Toque no botão verde",
-  "Envie a mensagem que já vem escrita",
-  "Nossa equipe responde e combina o melhor dia com você",
-];
+type Confirmacao = { eventId: string; listaDeEspera: boolean };
 
 export function ConteudoVaga({ agoraServidor }: { agoraServidor: number }) {
-  const fase = useFaseReplay(agoraServidor);
-  const noPrazo = fase !== "encerrado";
-  const { mensagemVaga, mensagemDepoisDoPrazo } = evento.replay;
-  const botao = (
-    <BotaoWhatsapp mensagem={noPrazo ? mensagemVaga : mensagemDepoisDoPrazo} />
-  );
+  const encerrada = useVagasEncerradas(agoraServidor);
+  const [confirmacao, setConfirmacao] = useState<Confirmacao | null>(null);
+
+  if (confirmacao) return <Recebido {...confirmacao} />;
 
   return (
-    <>
-      <Section className="pt-6 md:pt-14">
-        <Container largura="texto" className="flex flex-col gap-10">
-          <div className="flex flex-col gap-4">
-            <Heading nivel={1}>
-              {noPrazo ? "Sua vaga de avaliação" : "O prazo da Jornada terminou"}
-            </Heading>
-            <Text tipo="abertura">
-              {noPrazo
-                ? `A avaliação é presencial, na clínica, em ${cidade}, de ${avaliacao.inicio.data} a ${avaliacao.fim.data}.`
-                : `A condição de lançamento valia para quem marcou até ${fimVaga.data}. Você ainda pode marcar uma avaliação com a clínica pelo WhatsApp.`}
-            </Text>
-          </div>
+    <Section className="pt-6 md:pt-14">
+      <Container largura="texto" className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
+          <Heading nivel={1}>
+            {encerrada
+              ? "As vagas da Jornada foram encerradas"
+              : "Garanta sua vaga de avaliação da Jornada"}
+          </Heading>
+          <Text tipo="abertura">
+            {encerrada
+              ? `Quer saber quando abrirmos as vagas de ${mesListaDeEspera}? Entre na lista de espera e avisamos você.`
+              : `Preencha abaixo e nossa equipe te liga em até ${retornoMinutos} minutos para marcar o melhor dia, entre ${avaliacao.inicio.data} e ${avaliacao.fim.data}.`}
+          </Text>
+        </div>
 
-          <div className="flex flex-col gap-3">
-            {botao}
-            {noPrazo && (
-              <Text className="font-bold">
-                Marque até {fimVaga.dia}, {fimVaga.data}, às {fimVaga.hora}.
-              </Text>
-            )}
-          </div>
+        <FormVaga
+          // Troca de fase com a página aberta: o formulário recomeça com o botão certo.
+          key={encerrada ? "espera" : "vaga"}
+          rotuloBotao={encerrada ? "Entrar na lista de espera" : "Quero minha vaga"}
+          aoConfirmar={setConfirmacao}
+        />
 
-          <ol className="flex flex-col gap-5">
-            {passos.map((passo, indice) => (
-              <li key={passo} className="flex items-center gap-4">
-                <span
-                  aria-hidden="true"
-                  className="flex size-14 shrink-0 items-center justify-center rounded-full bg-field font-display text-title leading-none font-semibold text-on-field"
-                >
-                  {indice + 1}
-                </span>
-                <span className="text-lg leading-[1.35] text-ink">{passo}</span>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </Section>
-
-      {noPrazo && <Condicao acao={botao} />}
-    </>
+        <Alternativa encerrada={encerrada} />
+      </Container>
+    </Section>
   );
 }
 
-function BotaoWhatsapp({ mensagem }: { mensagem: string }) {
-  const link = `https://wa.me/${evento.whatsapp.clinicaE164}?text=${encodeURIComponent(mensagem)}`;
+function Alternativa({ encerrada }: { encerrada: boolean }) {
+  const { whatsappComercialE164, mensagemWhatsapp, mensagemListaDeEspera } = evento.vaga;
+  const numero = whatsappComercialE164 || evento.whatsapp.clinicaE164;
+  const mensagem = encerrada ? mensagemListaDeEspera : mensagemWhatsapp;
+  const link = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
 
   return (
-    <Button
-      href={link}
-      aoAbrirLink={() => rastrear("track", "Contact")}
-      novaAba
-      className="min-h-20! px-4! text-lg! sm:w-full!"
-    >
-      <IconeWhatsapp />
-      Marcar pelo WhatsApp
-    </Button>
+    <div className="flex flex-col gap-3 border-t-2 border-paper-3 pt-8">
+      <p className="text-lg leading-[1.35] font-bold text-ink">
+        Prefere chamar no WhatsApp?
+      </p>
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener"
+        onClick={() => rastrear("track", "Contact")}
+        className="inline-flex min-h-14 items-center gap-3 self-start rounded-control text-md font-bold text-accent underline underline-offset-4 hover:text-ink"
+      >
+        <IconeWhatsapp />
+        Chamar no WhatsApp
+      </a>
+    </div>
+  );
+}
+
+function Recebido({ eventId, listaDeEspera }: Confirmacao) {
+  const titulo = useRef<HTMLHeadingElement>(null);
+  const { clinicaExibicao } = evento.whatsapp;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    titulo.current?.focus();
+    // Mesmo event_id do servidor: a Meta conta um agendamento só, mesmo chegando pelos dois caminhos.
+    if (!listaDeEspera) rastrear("track", "Schedule", {}, { eventID: eventId });
+  }, [eventId, listaDeEspera]);
+
+  return (
+    <Section className="pt-6 md:pt-14">
+      <Container largura="texto" className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
+          <Heading nivel={1} ref={titulo} tabIndex={-1} className="outline-none">
+            {listaDeEspera ? "Pronto, você está na lista de espera" : "Recebemos!"}
+          </Heading>
+          <Text tipo="abertura">
+            {listaDeEspera
+              ? `Quando abrirmos as vagas de ${mesListaDeEspera}, nossa equipe fala com você.`
+              : `Nossa equipe vai te ligar em até ${retornoMinutos} minutos.`}
+          </Text>
+        </div>
+
+        <div className="flex flex-col gap-4 rounded-card bg-paper-2 p-5 sm:p-6">
+          <p className="text-md leading-[1.5] text-ink">
+            Salve o número da clínica para reconhecer a nossa ligação:
+          </p>
+          <p className="font-display text-section leading-[1.1] font-semibold whitespace-nowrap text-ink tabular-nums">
+            {clinicaExibicao}
+          </p>
+          <Button href="/contato.vcf" className="sm:w-full!">
+            Salvar o número no celular
+          </Button>
+        </div>
+      </Container>
+    </Section>
   );
 }

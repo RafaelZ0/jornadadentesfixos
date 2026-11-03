@@ -5,10 +5,8 @@ import { evento } from "@/config/evento";
 import { excedeuLimite } from "@/lib/limite";
 import { mensagens } from "@/lib/mensagens";
 import { enviarLeadMeta } from "@/lib/meta";
+import { salvarNaPlanilha } from "@/lib/planilha";
 import { somenteDigitos, whatsappValido } from "@/lib/whatsapp";
-
-const TIMEOUT_MS = 8000;
-const TENTATIVAS = 2;
 
 const textoOpcional = z.string().max(500).optional();
 
@@ -29,36 +27,6 @@ const esquema = z.object({
 });
 
 type Lead = z.infer<typeof esquema> & { event_id: string };
-
-async function salvarNaPlanilha(lead: Lead) {
-  const url = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-  const segredo = process.env.SHEETS_SECRET;
-  if (!url || !segredo) return false;
-
-  for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa += 1) {
-    try {
-      // O App da Web grava no POST e responde com um redirecionamento para o JSON.
-      // Seguir esse redirecionamento vira um GET sem corpo, que só lê a resposta.
-      const resposta = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ segredo, ...lead }),
-        redirect: "follow",
-        cache: "no-store",
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-      });
-
-      // Sem acesso público, o Google devolve uma página HTML, e o parse falha aqui.
-      const dados = JSON.parse(await resposta.text());
-      if (dados.ok === true) return true;
-      console.error("Planilha recusou a inscrição", dados.erro, { tentativa });
-    } catch (erro) {
-      console.error("Falha ao falar com a planilha", String(erro), { tentativa });
-    }
-  }
-
-  return false;
-}
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();

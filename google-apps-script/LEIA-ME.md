@@ -48,6 +48,27 @@ Alterar o código não muda o site até você publicar uma nova versão. **Não 
 3. Em **Version**, escolha **New version**.
 4. Clique em **Deploy**.
 
+## 6. Aba Vagas (pedidos de avaliação)
+
+Depois de colar o `Code.gs` novo:
+
+1. Rode o `setup()` de novo. Ele cria a aba **Vagas** sem mexer nos inscritos. O Google pede uma autorização nova, por causa do envio de e-mail: permita.
+2. O `setup()` também muda duas configurações da planilha:
+   - fuso horário para São Paulo;
+   - recálculo **"Quando houver alterações e a cada minuto"**.
+   Sem o recálculo a cada minuto, a cor vermelha de atraso só apareceria quando alguém editasse a planilha. Confira em **Arquivo > Configurações > Cálculo**.
+3. Aviso por e-mail (opcional): em **Project Settings > Script Properties**, crie `AVISO_EMAIL` com o e-mail do comercial. Para desligar, apague a propriedade. A conta gratuita do Google envia até 100 e-mails por dia.
+4. Republique sem mudar a URL (passo 5).
+
+Como a aba Vagas funciona:
+
+- Cada pedido entra na linha 2, logo abaixo do cabeçalho: o mais novo fica sempre no topo.
+- **Vermelho:** status "Novo" há mais de 10 minutos. **Verde:** status "Agendado". A cor some quando a equipe troca o status.
+- "Já era inscrito" procura o WhatsApp na aba Inscritos.
+- "Ligar" e "Chamar no WhatsApp" são links. A mensagem do WhatsApp já vem escrita para o atendente.
+- A coluna `event_id` fica escondida. Ela evita pedido duplicado quando o site tenta enviar de novo.
+- Depois de 30/11 às 22h, os pedidos chegam com status "Lista de espera".
+
 ## Como a planilha se comporta
 
 - WhatsApp repetido atualiza a mesma linha, inclusive a data/hora e a origem.

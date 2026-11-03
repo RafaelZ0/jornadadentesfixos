@@ -21,7 +21,7 @@ type ConteudoReplayProps = {
 };
 
 const fimReplay = porExtenso(evento.aula.fimReplay);
-const fimVaga = porExtenso(evento.replay.fimVaga);
+const fimVaga = porExtenso(evento.vaga.prazo);
 const titulo = "Replay da aula";
 
 export function ConteudoReplay({

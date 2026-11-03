@@ -45,20 +45,29 @@ export const evento = {
   // O ID do vídeo fica em config/replay-servidor.ts, fora do código que vai para o navegador.
   replay: {
     capa: "/images/capa-replay.jpg",
-    // Até aqui o botão da vaga continua na página, mesmo com o replay encerrado.
-    fimVaga: "2026-11-30T22:00:00-03:00",
     // Textos pedidos pelo usuário em 03/11/2026. Pendentes de revisão do jurídico (regras do CFO).
     condicao:
       "Condição especial de lançamento para quem marcar até 30/11 e fechar na avaliação",
-    // Mensagem que já vem escrita no WhatsApp da clínica, para a equipe saber de onde a pessoa veio.
-    mensagemVaga:
-      "Olá! Participei da Jornada dos Dentes Fixos e quero marcar minha avaliação.",
-    mensagemDepoisDoPrazo: "Olá! Quero marcar uma avaliação.",
     bonus: [
       "Acompanhamento pós-operatório de 24 meses, por escrito",
       "Kit de cuidados e guia impresso",
       "Prioridade na data da cirurgia para quem fechar nas primeiras 48h",
     ],
+  },
+
+  // Pedidos de vaga de avaliação (/vaga), gravados na aba "Vagas" da planilha.
+  vaga: {
+    // Depois deste horário, /vaga só aceita a lista de espera. O servidor também confere.
+    prazo: "2026-11-30T22:00:00-03:00",
+    retornoMinutos: 15,
+    horarios: ["Manhã", "Tarde", "Noite"],
+    // [WHATSAPP DO COMERCIAL]: só dígitos, com 55 e DDD. Vazio: usa o WhatsApp da clínica.
+    whatsappComercialE164: process.env.NEXT_PUBLIC_WHATSAPP_COMERCIAL ?? "",
+    mensagemWhatsapp:
+      "Olá! Assisti à aula da Jornada dos Dentes Fixos e quero minha vaga de avaliação.",
+    mensagemListaDeEspera:
+      "Olá! Assisti à aula da Jornada dos Dentes Fixos e quero entrar na lista de espera.",
+    mesListaDeEspera: "janeiro",
   },
 
   videoConvite: {

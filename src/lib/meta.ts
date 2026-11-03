@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { evento } from "@/config/evento";
 
 type LeadMeta = {
+  /** Evento padrão da Meta. Lead na inscrição, Schedule no pedido de vaga. */
+  nomeEvento?: "Lead" | "Schedule";
   eventId: string;
   urlOrigem?: string;
   whatsapp: string;
@@ -48,7 +50,7 @@ export async function enviarLeadMeta(lead: LeadMeta) {
   const corpo = {
     data: [
       {
-        event_name: "Lead",
+        event_name: lead.nomeEvento ?? "Lead",
         event_time: Math.floor(Date.now() / 1000),
         event_id: lead.eventId,
         action_source: "website",

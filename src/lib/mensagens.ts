@@ -6,4 +6,5 @@ export const mensagens = {
     "Confira o número: são 2 dígitos do DDD e 9 do celular, como (28) 99999-9999.",
   cidade: "Escreva a sua cidade.",
   consentimento: "Para receber as informações da aula, marque esta caixa.",
+  horario: "Escolha o melhor horário para ligarmos.",
 };

@@ -1,26 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {
-  useId,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type ComponentProps,
-  type FormEvent,
-} from "react";
+import { useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
+import { Campo, digitarWhatsapp } from "@/components/ui/Campo";
 import { evento } from "@/config/evento";
 import { aceitouCookies } from "@/lib/consentimento";
 import { enviarInscricao } from "@/lib/inscricao";
 import { mensagens } from "@/lib/mensagens";
 import { lerOrigem } from "@/lib/origem";
 import { guardarPrimeiroNome } from "@/lib/primeiro-nome";
-import {
-  formatarWhatsapp,
-  somenteDigitos,
-  whatsappValido,
-} from "@/lib/whatsapp";
+import { somenteDigitos, whatsappValido } from "@/lib/whatsapp";
 
 type Valores = {
   nome: string;
@@ -46,40 +36,6 @@ function validar(campo: Campo, valores: Valores) {
     case "consentimento":
       return valores.consentimento ? undefined : mensagens.consentimento;
   }
-}
-
-const estiloCampo =
-  "min-h-14 w-full rounded-control border-2 border-edge bg-surface px-4 text-md text-ink transition-colors duration-(--dur-micro) ease-out placeholder:text-edge aria-invalid:border-error";
-
-function Campo({
-  rotulo,
-  erro,
-  ...props
-}: ComponentProps<"input"> & { rotulo: string; erro?: string }) {
-  const id = useId();
-  const idErro = `${id}-erro`;
-
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-md leading-tight font-bold text-ink">
-        {rotulo}
-      </label>
-      <input
-        id={id}
-        required
-        aria-required="true"
-        aria-invalid={erro ? true : undefined}
-        aria-describedby={erro ? idErro : undefined}
-        className={estiloCampo}
-        {...props}
-      />
-      {erro && (
-        <p id={idErro} className="text-sm leading-[1.4] font-bold text-error">
-          {erro}
-        </p>
-      )}
-    </div>
-  );
 }
 
 export function LeadForm() {
@@ -113,23 +69,7 @@ export function LeadForm() {
   }
 
   function aoDigitarWhatsapp(evento: ChangeEvent<HTMLInputElement>) {
-    const campo = evento.target;
-    const cursor = campo.selectionStart ?? campo.value.length;
-    const digitosAntes = somenteDigitos(campo.value.slice(0, cursor)).length;
-    const formatado = formatarWhatsapp(campo.value);
-
-    atualizar("whatsapp", formatado);
-
-    // Mantém o cursor no lugar quando a pessoa corrige um dígito no meio do número.
-    requestAnimationFrame(() => {
-      let posicao = 0;
-      let contados = 0;
-      while (posicao < formatado.length && contados < digitosAntes) {
-        if (/\d/.test(formatado[posicao])) contados += 1;
-        posicao += 1;
-      }
-      campo.setSelectionRange(posicao, posicao);
-    });
+    digitarWhatsapp(evento, (valor) => atualizar("whatsapp", valor));
   }
 
   function liberar() {

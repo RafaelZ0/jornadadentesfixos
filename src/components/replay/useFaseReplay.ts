@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { faseDoReplay } from "@/lib/replay";
+import { faseDoReplay, vagasEncerradas } from "@/lib/replay";
 
 function assinar(aoMudar: () => void) {
   const relogio = setInterval(aoMudar, 1000);
@@ -14,5 +14,14 @@ export function useFaseReplay(agoraServidor: number) {
     assinar,
     () => faseDoReplay(Date.now()),
     () => faseDoReplay(agoraServidor),
+  );
+}
+
+/** Só o prazo da vaga, sem depender do replay. */
+export function useVagasEncerradas(agoraServidor: number) {
+  return useSyncExternalStore(
+    assinar,
+    () => vagasEncerradas(Date.now()),
+    () => vagasEncerradas(agoraServidor),
   );
 }
