@@ -45,7 +45,7 @@ export function Hero() {
                   fill
                   preload
                   sizes="(min-width: 768px) 460px, calc(100vw - 40px)"
-                  className="object-cover object-[50%_25%]"
+                  className="object-cover object-[50%_8%]"
                 />
               ) : (
                 <div className="flex size-full items-center justify-center border-2 border-dashed border-edge bg-paper-2 p-4 text-center text-sm leading-[1.4] text-ink-2">
