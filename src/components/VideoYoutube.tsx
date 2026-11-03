@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { FormatoVideo } from "@/config/evento";
-import { rastrear } from "@/lib/pixel";
+import { enviarEvento, type EventoGtm } from "@/lib/rastreamento";
 import { proporcoes } from "@/lib/video";
 
 type VideoYoutubeProps = {
@@ -14,7 +14,7 @@ type VideoYoutubeProps = {
   /** Usada se a capa principal não carregar (a miniatura maior do YouTube nem sempre existe). */
   capaReserva?: string;
   sizes?: string;
-  eventoPixel?: string;
+  evento?: EventoGtm;
 };
 
 export function VideoYoutube({
@@ -24,14 +24,14 @@ export function VideoYoutube({
   capa,
   capaReserva,
   sizes = "(min-width: 768px) 420px, calc(100vw - 40px)",
-  eventoPixel,
+  evento,
 }: VideoYoutubeProps) {
   const [tocando, setTocando] = useState(false);
   const [capaFalhou, setCapaFalhou] = useState(false);
   const capaAtual = capaFalhou ? capaReserva : capa;
 
   function aoTocar() {
-    if (eventoPixel) rastrear("trackCustom", eventoPixel);
+    if (evento) enviarEvento(evento);
     setTocando(true);
   }
 

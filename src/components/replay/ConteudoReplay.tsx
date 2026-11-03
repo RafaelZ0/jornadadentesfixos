@@ -105,7 +105,7 @@ function Video({ id, capaLocal }: { id: string; capaLocal?: string }) {
       capa={capaLocal ?? miniatura("maxresdefault")}
       capaReserva={miniatura("hqdefault")}
       sizes="(min-width: 1024px) 860px, calc(100vw - 40px)"
-      eventoPixel="ReplayPlay"
+      evento="replay_play"
     />
   );
 }

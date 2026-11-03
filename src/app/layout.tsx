@@ -3,8 +3,10 @@ import { Atkinson_Hyperlegible, Literata } from "next/font/google";
 import { AvisoCookies } from "@/components/AvisoCookies";
 import { CapturaOrigem } from "@/components/CapturaOrigem";
 import { Footer } from "@/components/Footer";
-import { GoogleTagManager } from "@/components/rastreamento/GoogleTagManager";
-import { MetaPixel } from "@/components/rastreamento/MetaPixel";
+import {
+  GoogleTagManager,
+  GoogleTagManagerNoscript,
+} from "@/components/rastreamento/GoogleTagManager";
 import { evento } from "@/config/evento";
 import "./globals.css";
 
@@ -51,10 +53,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${literata.variable} ${atkinson.variable}`}
     >
       <body className="flex min-h-dvh flex-col">
+        <GoogleTagManagerNoscript />
         <main className="flex-1">{children}</main>
         <Footer />
         <CapturaOrigem />
-        <MetaPixel />
         <GoogleTagManager />
         <AvisoCookies />
       </body>

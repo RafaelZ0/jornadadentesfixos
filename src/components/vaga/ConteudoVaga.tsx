@@ -11,7 +11,7 @@ import { Text } from "@/components/ui/Text";
 import { FormVaga } from "@/components/vaga/FormVaga";
 import { evento } from "@/config/evento";
 import { porExtenso } from "@/lib/datas";
-import { rastrear } from "@/lib/pixel";
+import { enviarEvento } from "@/lib/rastreamento";
 
 // Datas sem hora: meio-dia evita cair no dia anterior por causa do fuso.
 const avaliacao = {
@@ -72,7 +72,7 @@ function Alternativa({ encerrada }: { encerrada: boolean }) {
         href={link}
         target="_blank"
         rel="noopener"
-        onClick={() => rastrear("track", "Contact")}
+        onClick={() => enviarEvento("whatsapp_click")}
         className="inline-flex min-h-14 items-center gap-3 self-start rounded-control text-md font-bold text-accent underline underline-offset-4 hover:text-ink"
       >
         <IconeWhatsapp />
@@ -90,7 +90,7 @@ function Recebido({ eventId, listaDeEspera }: Confirmacao) {
     window.scrollTo({ top: 0 });
     titulo.current?.focus();
     // Mesmo event_id do servidor: a Meta conta um agendamento só, mesmo chegando pelos dois caminhos.
-    if (!listaDeEspera) rastrear("track", "Schedule", {}, { eventID: eventId });
+    if (!listaDeEspera) enviarEvento("schedule_submit", { event_id: eventId });
   }, [eventId, listaDeEspera]);
 
   return (

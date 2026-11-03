@@ -25,7 +25,7 @@ export function SecaoVideo() {
             formato={formato}
             titulo={titulo}
             capa={temArquivo(capa) ? capa : undefined}
-            eventoPixel="VideoPlay"
+            evento="video_play"
           />
         ) : (
           <div

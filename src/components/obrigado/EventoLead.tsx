@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useAceitouCookies } from "@/lib/consentimento";
-import { pixelLiberado, rastrear } from "@/lib/pixel";
+import { enviarEvento, rastreamentoLiberado } from "@/lib/rastreamento";
 
 function jaEnviou(chave: string) {
   try {
@@ -23,7 +23,7 @@ function marcarEnviado(chave: string) {
 
 export function EventoLead() {
   const eid = useSearchParams().get("eid");
-  const liberado = pixelLiberado(useAceitouCookies());
+  const liberado = rastreamentoLiberado(useAceitouCookies());
 
   useEffect(() => {
     if (!eid || !liberado) return;
@@ -32,7 +32,8 @@ export function EventoLead() {
     if (jaEnviou(chave)) return;
 
     marcarEnviado(chave);
-    rastrear("track", "Lead", {}, { eventID: eid });
+    // event_id igual ao da API de Conversões: no GTM, vai no campo Event ID da tag Lead.
+    enviarEvento("lead_form_submit", { event_id: eid });
   }, [eid, liberado]);
 
   return null;
