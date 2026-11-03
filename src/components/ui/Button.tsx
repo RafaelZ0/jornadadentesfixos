@@ -8,8 +8,6 @@ type ButtonProps = ComponentProps<"button"> & {
   aoAbrirLink?: () => void;
   /** Abre o link em outra aba, para a página continuar viva e terminar de enviar o evento. */
   novaAba?: boolean;
-  /** Só para a página /estilo: congela um estado para ele poder ser visto. */
-  demo?: "hover" | "focus" | "active";
   children: ReactNode;
 };
 
@@ -23,12 +21,6 @@ const carregando = "cursor-progress bg-action text-on-action";
 
 const desabilitado = "cursor-not-allowed bg-paper-3 text-ink-2";
 
-const demos = {
-  hover: "bg-action-hover!",
-  focus: "outline-3 outline-offset-3 outline-focus",
-  active: "translate-y-px bg-action-hover!",
-};
-
 export function Button({
   loading = false,
   loadingLabel = "Enviando...",
@@ -36,14 +28,13 @@ export function Button({
   href,
   aoAbrirLink,
   novaAba = false,
-  demo,
   type = "button",
   className = "",
   children,
   ...props
 }: ButtonProps) {
   const estado = loading ? carregando : disabled ? desabilitado : ativo;
-  const classes = [base, estado, demo ? demos[demo] : "", className].join(" ");
+  const classes = [base, estado, className].join(" ");
 
   if (href && !disabled && !loading) {
     return (
