@@ -36,6 +36,11 @@ export const evento = {
     versaoGraph: "v26.0",
   },
 
+  // Vazio na Vercel desliga o Tag Manager.
+  googleTagManager: {
+    id: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-KLKXFHJ6",
+  },
+
   // Links curtos /aula e /live. Trocou o link no YouTube: troque aqui na Vercel e republique.
   youtube: {
     aulaUrl: process.env.NEXT_PUBLIC_YOUTUBE_LIVE_URL ?? "",

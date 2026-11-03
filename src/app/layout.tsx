@@ -3,6 +3,7 @@ import { Atkinson_Hyperlegible, Literata } from "next/font/google";
 import { AvisoCookies } from "@/components/AvisoCookies";
 import { CapturaOrigem } from "@/components/CapturaOrigem";
 import { Footer } from "@/components/Footer";
+import { GoogleTagManager } from "@/components/rastreamento/GoogleTagManager";
 import { MetaPixel } from "@/components/rastreamento/MetaPixel";
 import { evento } from "@/config/evento";
 import "./globals.css";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <CapturaOrigem />
         <MetaPixel />
+        <GoogleTagManager />
         <AvisoCookies />
       </body>
     </html>
