@@ -45,6 +45,19 @@ export const diaFimReplay = new Intl.DateTimeFormat("pt-BR", {
   .format(fimReplay)
   .replace("-feira", "");
 
+// Para outras datas do lançamento, no mesmo formato do replay: "segunda", "30/11", "22h".
+export function porExtenso(iso: string) {
+  const data = new Date(iso);
+  const formatar = (opcoes: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat("pt-BR", { ...fuso, ...opcoes }).format(data);
+
+  return {
+    dia: formatar({ weekday: "long" }).replace("-feira", ""),
+    data: formatar({ day: "2-digit", month: "2-digit" }),
+    hora: formatar({ hour: "numeric" }).replace(/\D/g, "").concat("h"),
+  };
+}
+
 const { duracaoMinutos } = evento.aula;
 const horas = Math.floor(duracaoMinutos / 60);
 const minutos = duracaoMinutos % 60;

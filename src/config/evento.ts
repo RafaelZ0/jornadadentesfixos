@@ -36,6 +36,31 @@ export const evento = {
     versaoGraph: "v26.0",
   },
 
+  // Links curtos /aula e /live. Trocou o link no YouTube: troque aqui na Vercel e republique.
+  youtube: {
+    aulaUrl: process.env.NEXT_PUBLIC_YOUTUBE_LIVE_URL ?? "",
+    proximaLiveUrl: process.env.NEXT_PUBLIC_YOUTUBE_NEXT_LIVE_URL ?? "",
+  },
+
+  // O ID do vídeo fica em config/replay-servidor.ts, fora do código que vai para o navegador.
+  replay: {
+    capa: "/images/capa-replay.jpg",
+    // Até aqui o botão da vaga continua na página, mesmo com o replay encerrado.
+    fimVaga: "2026-11-30T22:00:00-03:00",
+    // Textos pedidos pelo usuário em 03/11/2026. Pendentes de revisão do jurídico (regras do CFO).
+    condicao:
+      "Condição especial de lançamento para quem marcar até 30/11 e fechar na avaliação",
+    // Mensagem que já vem escrita no WhatsApp da clínica, para a equipe saber de onde a pessoa veio.
+    mensagemVaga:
+      "Olá! Participei da Jornada dos Dentes Fixos e quero marcar minha avaliação.",
+    mensagemDepoisDoPrazo: "Olá! Quero marcar uma avaliação.",
+    bonus: [
+      "Acompanhamento pós-operatório de 24 meses, por escrito",
+      "Kit de cuidados e guia impresso",
+      "Prioridade na data da cirurgia para quem fechar nas primeiras 48h",
+    ],
+  },
+
   videoConvite: {
     id: process.env.NEXT_PUBLIC_VIDEO_CONVITE_ID ?? "",
     formato: "9:16" as FormatoVideo,
@@ -107,5 +132,7 @@ export const evento = {
   rotas: {
     termos: "/termos",
     privacidade: "/privacidade",
+    replay: "/replay",
+    vaga: "/vaga",
   },
 } as const;

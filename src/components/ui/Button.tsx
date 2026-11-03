@@ -4,6 +4,10 @@ type ButtonProps = ComponentProps<"button"> & {
   loading?: boolean;
   loadingLabel?: string;
   href?: string;
+  /** Roda quando o link (com href) é tocado, antes de a página mudar. */
+  aoAbrirLink?: () => void;
+  /** Abre o link em outra aba, para a página continuar viva e terminar de enviar o evento. */
+  novaAba?: boolean;
   /** Só para a página /estilo: congela um estado para ele poder ser visto. */
   demo?: "hover" | "focus" | "active";
   children: ReactNode;
@@ -30,6 +34,8 @@ export function Button({
   loadingLabel = "Enviando...",
   disabled = false,
   href,
+  aoAbrirLink,
+  novaAba = false,
   demo,
   type = "button",
   className = "",
@@ -41,7 +47,13 @@ export function Button({
 
   if (href && !disabled && !loading) {
     return (
-      <a href={href} className={classes}>
+      <a
+        href={href}
+        onClick={aoAbrirLink}
+        target={novaAba ? "_blank" : undefined}
+        rel={novaAba ? "noopener" : undefined}
+        className={classes}
+      >
         {children}
       </a>
     );

@@ -11,6 +11,9 @@ type VideoYoutubeProps = {
   formato: FormatoVideo;
   titulo: string;
   capa?: string;
+  /** Usada se a capa principal não carregar (a miniatura maior do YouTube nem sempre existe). */
+  capaReserva?: string;
+  sizes?: string;
   eventoPixel?: string;
 };
 
@@ -19,9 +22,13 @@ export function VideoYoutube({
   formato,
   titulo,
   capa,
+  capaReserva,
+  sizes = "(min-width: 768px) 420px, calc(100vw - 40px)",
   eventoPixel,
 }: VideoYoutubeProps) {
   const [tocando, setTocando] = useState(false);
+  const [capaFalhou, setCapaFalhou] = useState(false);
+  const capaAtual = capaFalhou ? capaReserva : capa;
 
   function aoTocar() {
     if (eventoPixel) rastrear("trackCustom", eventoPixel);
@@ -47,12 +54,14 @@ export function VideoYoutube({
           onClick={aoTocar}
           className="group absolute inset-0 flex size-full cursor-pointer flex-col items-center justify-center gap-4 focus-visible:-outline-offset-8 focus-visible:outline-on-field"
         >
-          {capa && (
+          {capaAtual && (
             <Image
-              src={capa}
+              key={capaAtual}
+              src={capaAtual}
               alt=""
               fill
-              sizes="(min-width: 768px) 420px, calc(100vw - 40px)"
+              sizes={sizes}
+              onError={() => setCapaFalhou(true)}
               className="object-cover"
             />
           )}

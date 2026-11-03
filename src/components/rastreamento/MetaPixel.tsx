@@ -8,6 +8,8 @@ import { pixelLiberado, rastrear, URL_SCRIPT_PIXEL } from "@/lib/pixel";
 
 const ESPERA_MS = 3000;
 const INTERACOES = ["pointerdown", "scroll", "keydown"];
+// Páginas de conversão: o script carrega na hora para não perder o evento.
+const SEM_ESPERA = ["/obrigado", "/vaga"];
 
 export function MetaPixel() {
   const rota = usePathname();
@@ -37,7 +39,7 @@ export function MetaPixel() {
     };
   }, [liberado, espera]);
 
-  if (!liberado || (espera && rota !== "/obrigado")) return null;
+  if (!liberado || (espera && !SEM_ESPERA.includes(rota))) return null;
 
   return <Script src={URL_SCRIPT_PIXEL} strategy="afterInteractive" />;
 }

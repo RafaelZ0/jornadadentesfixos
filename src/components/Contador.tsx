@@ -14,15 +14,25 @@ function assinar(aoMudar: () => void) {
 
 const minutoAtual = () => Math.floor(Date.now() / MINUTO) * MINUTO;
 
-export function Contador() {
+type ContadorProps = {
+  /** Data e hora em ISO. Sem ela, conta até o início da aula. */
+  ate?: string;
+  rotulo?: string;
+};
+
+export function Contador({ ate, rotulo = "A aula começa em" }: ContadorProps) {
   // No servidor o valor é null: o contador só aparece no cliente, sem erro de hidratação.
   const agora = useSyncExternalStore(assinar, minutoAtual, () => null);
+  const alvo = ate ? new Date(ate).getTime() : inicio;
 
   const altura = "min-h-36";
 
   if (agora === null) return <div className={altura} aria-hidden="true" />;
 
-  if (agora >= inicio) {
+  // Quem usa outro alvo cuida do que aparece depois dele.
+  if (ate && agora >= alvo) return null;
+
+  if (agora >= inicio && !ate) {
     return (
       <p
         className={`flex items-center font-display text-title leading-[1.25] font-semibold text-ink ${altura}`}
@@ -32,7 +42,7 @@ export function Contador() {
     );
   }
 
-  const restante = Math.floor((inicio - agora) / MINUTO);
+  const restante = Math.floor((alvo - agora) / MINUTO);
   const partes = [
     { valor: Math.floor(restante / 1440), um: "dia", varios: "dias" },
     { valor: Math.floor((restante % 1440) / 60), um: "hora", varios: "horas" },
@@ -44,12 +54,10 @@ export function Contador() {
 
   return (
     <div className={`flex flex-col gap-3 ${altura}`}>
-      <p className="text-md leading-[1.4] font-bold text-ink">
-        A aula começa em
-      </p>
+      <p className="text-md leading-[1.4] font-bold text-ink">{rotulo}</p>
       <div
         role="timer"
-        aria-label={`A aula começa em ${leitura}`}
+        aria-label={`${rotulo} ${leitura}`}
         className="grid grid-cols-[repeat(3,minmax(0,1fr))] gap-2 sm:gap-3"
       >
         {partes.map((parte) => (
