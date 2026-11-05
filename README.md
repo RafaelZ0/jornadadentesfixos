@@ -16,6 +16,8 @@ O Pixel da Meta no navegador roda só pelo GTM (`GTM-KLKXFHJ6`). O site não car
 | `lead_form_submit` | Chegada em /obrigado depois da inscrição | Lead, com `event_id` |
 | `schedule_submit` | Pedido de vaga recebido em /vaga | Schedule, com `event_id` |
 | `whatsapp_click` | "Chamar no WhatsApp" em /vaga | Contact |
+| `aula_acesso` | Abriu o link curto /aula | Personalizado `AcessoAula` (comparecimento) |
+| `live_acesso` | Abriu o link curto /live | Personalizado `AcessoLive` |
 
 O `event_id` de `lead_form_submit` e `schedule_submit` é o mesmo que o servidor manda pela API de Conversões. Ele precisa ir no campo Event ID da tag da Meta, senão a Meta conta cada conversão duas vezes.
 

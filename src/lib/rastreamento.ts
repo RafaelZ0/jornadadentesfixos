@@ -15,7 +15,9 @@ export type EventoGtm =
   | "replay_play"
   | "lead_form_submit"
   | "schedule_submit"
-  | "whatsapp_click";
+  | "whatsapp_click"
+  | "aula_acesso"
+  | "live_acesso";
 
 export function rastreamentoLiberado(aceitou: boolean) {
   return !evento.meta.exigeConsentimento || aceitou;

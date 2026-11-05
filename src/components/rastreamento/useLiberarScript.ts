@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 const ESPERA_MS = 3000;
 const INTERACOES = ["pointerdown", "scroll", "keydown"];
-// Páginas de conversão: o script carrega na hora para não perder o evento.
-const SEM_ESPERA = ["/obrigado", "/vaga"];
+// Páginas de conversão e de acesso à aula: o script carrega na hora para não perder o evento.
+const SEM_ESPERA = ["/obrigado", "/vaga", "/aula", "/live"];
 
 /** Segura um script de terceiros por 3 s ou até o primeiro toque, sem pesar no carregamento. */
 export function useLiberarScript(liberado: boolean) {

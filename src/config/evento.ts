@@ -17,12 +17,13 @@ export const evento = {
     duracaoMinutos: 80,
   },
 
+  // Lives de aquecimento no YouTube. [HORÁRIO] e [TEMA]: vazios não aparecem em produção.
   livesAquecimento: [
-    "2026-11-10",
-    "2026-11-12",
-    "2026-11-14",
-    "2026-11-17",
-    "2026-11-19",
+    { data: "2026-11-10", hora: "", tema: "" },
+    { data: "2026-11-12", hora: "", tema: "" },
+    { data: "2026-11-14", hora: "", tema: "" },
+    { data: "2026-11-17", hora: "", tema: "" },
+    { data: "2026-11-19", hora: "", tema: "" },
   ],
 
   avaliacaoPresencial: {
@@ -148,5 +149,6 @@ export const evento = {
     privacidade: "/privacidade",
     replay: "/replay",
     vaga: "/vaga",
+    grupo: "/grupo",
   },
 } as const;

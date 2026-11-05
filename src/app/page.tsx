@@ -6,13 +6,13 @@ import { SecaoComoVaiSer } from "@/components/secoes/SecaoComoVaiSer";
 import { SecaoInscricao } from "@/components/secoes/SecaoInscricao";
 import { SecaoMedos } from "@/components/secoes/SecaoMedos";
 import { SecaoPassos } from "@/components/secoes/SecaoPassos";
+import { SecaoProgramacao } from "@/components/secoes/SecaoProgramacao";
 import { SecaoPerguntas } from "@/components/secoes/SecaoPerguntas";
 import { SecaoProfessor } from "@/components/secoes/SecaoProfessor";
 import { SecaoReconhece } from "@/components/secoes/SecaoReconhece";
 import { SecaoVideo } from "@/components/secoes/SecaoVideo";
 import { Heading } from "@/components/ui/Heading";
 import { Text } from "@/components/ui/Text";
-import { evento } from "@/config/evento";
 import { dataDaAula, diaDaAula, horaDaAula } from "@/lib/datas";
 
 export default function Home() {
@@ -21,18 +21,7 @@ export default function Home() {
       <EventoInteresse />
       <Hero />
 
-      <SecaoInscricao id="inscricao">
-        <Heading nivel={2} tamanho="convite">
-          {dataDaAula}
-        </Heading>
-        <Text tipo="abertura" className="mt-3 font-display font-semibold">
-          {diaDaAula}, às {horaDaAula}
-        </Text>
-        <Text className="mt-4">
-          Ao vivo no {evento.aula.plataforma}, por cerca de{" "}
-          {evento.aula.duracaoMinutos} minutos.
-        </Text>
-      </SecaoInscricao>
+      <SecaoProgramacao />
 
       <SecaoVideo />
       <SecaoMedos />

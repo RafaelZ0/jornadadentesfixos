@@ -49,6 +49,13 @@ const grupos: { titulo: string; paginas: Pagina[] }[] = [
           "Botão verde do grupo. Aberta por aqui, não conta como inscrição na Meta.",
         depende: { rotulo: "Link do grupo", pronto: Boolean(evento.whatsapp.grupoUrl) },
       },
+      {
+        caminho: evento.rotas.grupo,
+        nome: "Grupo do WhatsApp",
+        confira:
+          "Mesmo conteúdo do obrigado, para anúncios de quem se inscreveu e não entrou no grupo. Não conta como inscrição.",
+        depende: { rotulo: "Link do grupo", pronto: Boolean(evento.whatsapp.grupoUrl) },
+      },
     ],
   },
   {
@@ -57,14 +64,14 @@ const grupos: { titulo: string; paginas: Pagina[] }[] = [
       {
         caminho: "/live",
         nome: "Próxima live",
-        confira: "Abre a live do YouTube. Sem link cadastrado, volta para a página inicial.",
+        confira: "Mostra “Abrindo a live” e vai para o YouTube. Sem link cadastrado, avisa que o link ainda não foi liberado.",
         depende: { rotulo: "Link da próxima live", pronto: Boolean(evento.youtube.proximaLiveUrl) },
         novaAba: true,
       },
       {
         caminho: "/aula",
         nome: "Aula ao vivo",
-        confira: "Abre a transmissão da aula. Sem link cadastrado, volta para a página inicial.",
+        confira: "Mostra “Abrindo a aula” e vai para o YouTube. Cada acesso conta no GTM (aula_acesso). Sem link cadastrado, avisa que o link ainda não foi liberado.",
         depende: { rotulo: "Link da aula", pronto: Boolean(evento.youtube.aulaUrl) },
         novaAba: true,
       },
