@@ -11,6 +11,12 @@ const lives = livesAquecimento.map((live) => ({
 
 const faltamDetalhes = lives.some((live) => !live.hora || !live.tema);
 
+const linha =
+  "grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-4 md:grid-cols-[8.5rem_minmax(0,1fr)]";
+const data =
+  "font-display text-lg leading-[1.35] font-semibold whitespace-nowrap text-ink";
+const hora = "block font-body text-md leading-[1.5] font-bold text-ink";
+
 /** Datas das lives de aquecimento e da aula, como no lançamento semente. */
 export function Programacao() {
   const emDesenvolvimento = process.env.NODE_ENV !== "production";
@@ -19,28 +25,26 @@ export function Programacao() {
     <div className="flex flex-col gap-4">
       <ol className="flex flex-col">
         {lives.map((live, indice) => (
-          <li
-            key={live.data}
-            className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-4 md:grid-cols-[8.5rem_minmax(0,1fr)] border-t border-rule py-3"
-          >
-            <span className="font-display text-lg leading-[1.35] font-semibold whitespace-nowrap text-ink">
+          <li key={live.data} className={`${linha} border-t border-rule py-3`}>
+            <span className={data}>
               {live.quando.dia.slice(0, 3)}, {live.quando.data}
+              {live.hora && <span className={hora}>{live.hora}</span>}
             </span>
             <span className="text-md leading-[1.5] text-ink">
               Live {indice + 1} no {aula.plataforma}
-              {live.hora && `, às ${live.hora}`}
               {live.tema && (
                 <span className="block text-ink-2">{live.tema}</span>
               )}
             </span>
           </li>
         ))}
-        <li className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-4 md:grid-cols-[8.5rem_minmax(0,1fr)] border-t-2 border-b-2 border-ink py-4">
-          <span className="font-display text-lg leading-[1.35] font-semibold whitespace-nowrap text-ink">
+        <li className={`${linha} border-t-2 border-b-2 border-ink py-4`}>
+          <span className={data}>
             {diaDaAula.slice(0, 3)}, {porExtenso(aula.inicio).data}
+            <span className={hora}>{horaDaAula}</span>
           </span>
           <span className="text-md leading-[1.5] text-ink">
-            <strong className="font-bold">Aula ao vivo, às {horaDaAula}</strong>
+            <strong className="font-bold">Aula ao vivo</strong>
             <span className="block text-ink-2">{aula.titulo}</span>
           </span>
         </li>

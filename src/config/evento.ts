@@ -17,13 +17,29 @@ export const evento = {
     duracaoMinutos: 80,
   },
 
-  // Lives de aquecimento no YouTube. [HORÁRIO] e [TEMA]: vazios não aparecem em produção.
+  // Lives de aquecimento no YouTube. Temas e horários passados pelo usuário em 06/11/2026.
   livesAquecimento: [
-    { data: "2026-11-10", hora: "", tema: "" },
-    { data: "2026-11-12", hora: "", tema: "" },
-    { data: "2026-11-14", hora: "", tema: "" },
-    { data: "2026-11-17", hora: "", tema: "" },
-    { data: "2026-11-19", hora: "", tema: "" },
+    {
+      data: "2026-11-10",
+      hora: "19h30",
+      tema: "Os 5 medos de quem usa dentadura, e o que é verdade",
+    },
+    {
+      data: "2026-11-12",
+      hora: "19h30",
+      tema: "Tenho pouco osso, sou diabético, tenho 70 anos: posso fazer implante?",
+    },
+    { data: "2026-11-14", hora: "10h", tema: "Caso real com o paciente convidado" },
+    {
+      data: "2026-11-17",
+      hora: "19h30",
+      tema: "Dentadura, protocolo ou implante unitário: qual é para você?",
+    },
+    {
+      data: "2026-11-19",
+      hora: "19h30",
+      tema: "Como funciona a cirurgia por dentro: do medo ao primeiro sorriso (bastidores)",
+    },
   ],
 
   avaliacaoPresencial: {
@@ -138,10 +154,11 @@ export const evento = {
   ],
 
   legal: {
-    rascunho: process.env.NEXT_PUBLIC_LEGAL_DRAFT === "true",
-    atualizadoEm: "2 de novembro de 2026",
+    // Textos aprovados pelo jurídico, segundo o usuário, em 06/11/2026.
+    rascunho: false,
+    atualizadoEm: "6 de novembro de 2026",
     prazoGuarda: "[PRAZO]",
-    canalPrivacidade: "[E-MAIL OU WHATSAPP DE PRIVACIDADE]",
+    canalPrivacidade: "e-mail, em institutopso@gmail.com",
   },
 
   rotas: {

@@ -110,12 +110,12 @@ const grupos: { titulo: string; paginas: Pagina[] }[] = [
       {
         caminho: evento.rotas.termos,
         nome: "Termos de uso",
-        confira: "Aviso de rascunho em cima, até o jurídico aprovar.",
+        confira: "Texto aprovado pelo jurídico, sem aviso de rascunho.",
       },
       {
         caminho: evento.rotas.privacidade,
         nome: "Privacidade",
-        confira: "Aviso de rascunho em cima, até o jurídico aprovar.",
+        confira: "Texto aprovado pelo jurídico, sem aviso de rascunho.",
       },
     ],
   },
