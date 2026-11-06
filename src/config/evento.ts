@@ -157,7 +157,7 @@ export const evento = {
     // Textos aprovados pelo jurídico, segundo o usuário, em 06/11/2026.
     rascunho: false,
     atualizadoEm: "6 de novembro de 2026",
-    prazoGuarda: "[PRAZO]",
+    prazoGuarda: "2 anos",
     canalPrivacidade: "e-mail, em institutopso@gmail.com",
   },
 
