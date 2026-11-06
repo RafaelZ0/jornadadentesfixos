@@ -18,26 +18,36 @@ export const evento = {
   },
 
   // Lives de aquecimento no YouTube. Temas e horários passados pelo usuário em 06/11/2026.
+  // url: link da transmissão programada. O /live leva sempre para a próxima live (ou a que está no ar).
   livesAquecimento: [
     {
       data: "2026-11-10",
       hora: "19h30",
+      url: "https://www.youtube.com/live/ufjoACDqO_0",
       tema: "Os 5 medos de quem usa dentadura, e o que é verdade",
     },
     {
       data: "2026-11-12",
       hora: "19h30",
+      url: "",
       tema: "Tenho pouco osso, sou diabético, tenho 70 anos: posso fazer implante?",
     },
-    { data: "2026-11-14", hora: "10h", tema: "Caso real com o paciente convidado" },
+    {
+      data: "2026-11-14",
+      hora: "10h",
+      url: "",
+      tema: "Caso real com o paciente convidado",
+    },
     {
       data: "2026-11-17",
       hora: "19h30",
+      url: "",
       tema: "Dentadura, protocolo ou implante unitário: qual é para você?",
     },
     {
       data: "2026-11-19",
       hora: "19h30",
+      url: "",
       tema: "Como funciona a cirurgia por dentro: do medo ao primeiro sorriso (bastidores)",
     },
   ],
@@ -58,7 +68,7 @@ export const evento = {
     id: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-KLKXFHJ6",
   },
 
-  // Links curtos /aula e /live. Trocou o link no YouTube: troque aqui na Vercel e republique.
+  // Link curto /aula. proximaLiveUrl só vale quando nenhuma live da lista acima tem link para agora.
   youtube: {
     aulaUrl: process.env.NEXT_PUBLIC_YOUTUBE_LIVE_URL ?? "",
     proximaLiveUrl: process.env.NEXT_PUBLIC_YOUTUBE_NEXT_LIVE_URL ?? "",
