@@ -14,12 +14,13 @@ O Pixel da Meta no navegador roda só pelo GTM (`GTM-KLKXFHJ6`). O site não car
 | `video_play` | Toque no vídeo de convite | Personalizado `VideoPlay` |
 | `replay_play` | Toque no vídeo do replay | Personalizado `ReplayPlay` |
 | `lead_form_submit` | Chegada em /obrigado depois da inscrição | Lead, com `event_id` |
+| `complete_registration` | No mesmo momento do `lead_form_submit` | CompleteRegistration, com `event_id` (o do Lead seguido de `-cr`) |
 | `schedule_submit` | Pedido de vaga recebido em /vaga | Schedule, com `event_id` |
 | `whatsapp_click` | "Chamar no WhatsApp" em /vaga | Contact |
 | `aula_acesso` | Abriu o link curto /aula | Personalizado `AcessoAula` (comparecimento) |
 | `live_acesso` | Abriu o link curto /live | Personalizado `AcessoLive` |
 
-O `event_id` de `lead_form_submit` e `schedule_submit` é o mesmo que o servidor manda pela API de Conversões. Ele precisa ir no campo Event ID da tag da Meta, senão a Meta conta cada conversão duas vezes.
+O `event_id` de `lead_form_submit`, `complete_registration` e `schedule_submit` é o mesmo que o servidor manda pela API de Conversões. Ele precisa ir no campo Event ID da tag da Meta, senão a Meta conta cada conversão duas vezes.
 
 Não use o acionador "Alteração no histórico" para o PageView: os botões que descem até o formulário (`#inscricao`) também mudam o histórico e contariam páginas que não existem.
 

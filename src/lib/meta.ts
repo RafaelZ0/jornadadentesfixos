@@ -1,10 +1,14 @@
 import { createHash } from "node:crypto";
 import { evento } from "@/config/evento";
 
+type NomeEvento = "Lead" | "Schedule" | "CompleteRegistration";
+
 type LeadMeta = {
   /** Evento padrão da Meta. Lead na inscrição, Schedule no pedido de vaga. */
-  nomeEvento?: "Lead" | "Schedule";
+  nomeEvento?: NomeEvento;
   eventId: string;
+  /** Outros eventos na mesma chamada, com os mesmos dados do usuário e de contexto. */
+  eventosExtras?: { nomeEvento: NomeEvento; eventId: string }[];
   urlOrigem?: string;
   whatsapp: string;
   nome: string;
@@ -47,26 +51,33 @@ export async function enviarLeadMeta(lead: LeadMeta) {
   const token = process.env.META_CAPI_ACCESS_TOKEN;
   if (!pixelId || !token) return;
 
+  const contexto = {
+    event_time: Math.floor(Date.now() / 1000),
+    action_source: "website",
+    event_source_url: lead.urlOrigem,
+    user_data: {
+      ph: [hash(lead.whatsapp)],
+      fn: [hash(normalizarNome(lead.nome))],
+      ct: [hash(normalizarCidade(lead.cidade))],
+      country: [hash("br")],
+      client_ip_address: lead.ip,
+      client_user_agent: lead.userAgent,
+      fbp: lead.fbp,
+      fbc: montarFbc(lead),
+    },
+  };
+
+  const eventos = [
+    { nomeEvento: lead.nomeEvento ?? "Lead", eventId: lead.eventId },
+    ...(lead.eventosExtras ?? []),
+  ];
+
   const corpo = {
-    data: [
-      {
-        event_name: lead.nomeEvento ?? "Lead",
-        event_time: Math.floor(Date.now() / 1000),
-        event_id: lead.eventId,
-        action_source: "website",
-        event_source_url: lead.urlOrigem,
-        user_data: {
-          ph: [hash(lead.whatsapp)],
-          fn: [hash(normalizarNome(lead.nome))],
-          ct: [hash(normalizarCidade(lead.cidade))],
-          country: [hash("br")],
-          client_ip_address: lead.ip,
-          client_user_agent: lead.userAgent,
-          fbp: lead.fbp,
-          fbc: montarFbc(lead),
-        },
-      },
-    ],
+    data: eventos.map(({ nomeEvento, eventId }) => ({
+      event_name: nomeEvento,
+      event_id: eventId,
+      ...contexto,
+    })),
     ...(process.env.META_TEST_EVENT_CODE && {
       test_event_code: process.env.META_TEST_EVENT_CODE,
     }),

@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useAceitouCookies } from "@/lib/consentimento";
+import { idCompleteRegistration } from "@/lib/event-id";
 import { enviarEvento, rastreamentoLiberado } from "@/lib/rastreamento";
 
 function jaEnviou(chave: string) {
@@ -34,6 +35,8 @@ export function EventoLead() {
     marcarEnviado(chave);
     // event_id igual ao da API de Conversões: no GTM, vai no campo Event ID da tag Lead.
     enviarEvento("lead_form_submit", { event_id: eid });
+    // Evento próprio para a tag CompleteRegistration, com o mesmo event_id que o servidor usa para ele.
+    enviarEvento("complete_registration", { event_id: idCompleteRegistration(eid) });
   }, [eid, liberado]);
 
   return null;

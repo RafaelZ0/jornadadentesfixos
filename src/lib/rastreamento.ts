@@ -14,6 +14,7 @@ export type EventoGtm =
   | "video_play"
   | "replay_play"
   | "lead_form_submit"
+  | "complete_registration"
   | "schedule_submit"
   | "whatsapp_click"
   | "aula_acesso"

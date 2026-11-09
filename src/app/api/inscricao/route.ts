@@ -4,6 +4,7 @@ import { z } from "zod";
 import { evento } from "@/config/evento";
 import { excedeuLimite } from "@/lib/limite";
 import { mensagens } from "@/lib/mensagens";
+import { idCompleteRegistration } from "@/lib/event-id";
 import { enviarLeadMeta } from "@/lib/meta";
 import { salvarNaPlanilha } from "@/lib/planilha";
 import { somenteDigitos, whatsappValido } from "@/lib/whatsapp";
@@ -71,6 +72,13 @@ export async function POST(request: NextRequest) {
     after(() =>
       enviarLeadMeta({
         eventId: event_id,
+        // A campanha otimiza por CompleteRegistration. O navegador manda o mesmo par de eventos.
+        eventosExtras: [
+          {
+            nomeEvento: "CompleteRegistration",
+            eventId: idCompleteRegistration(event_id),
+          },
+        ],
         urlOrigem: lead.url_origem ?? request.headers.get("referer") ?? undefined,
         whatsapp: lead.whatsapp,
         nome: lead.nome,
