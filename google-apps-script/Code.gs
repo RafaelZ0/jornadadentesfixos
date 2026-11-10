@@ -136,7 +136,12 @@ function setupVagas_(planilha) {
 
   // A cor de atraso usa AGORA(): sem recálculo a cada minuto, ela só muda quando alguém edita.
   planilha.setSpreadsheetTimeZone(FUSO);
-  planilha.setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE_AND_MINUTE);
+  try {
+    planilha.setRecalculationInterval(SpreadsheetApp.RecalculationInterval.ON_CHANGE_AND_MINUTE);
+  } catch (erro) {
+    // Algumas planilhas recusam pelo script. Ajuste à mão: Arquivo > Configurações > Cálculo.
+    console.warn('Recálculo a cada minuto não ajustado pelo script', erro);
+  }
 
   aba
     .getRange(1, 1, 1, total)
