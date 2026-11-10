@@ -102,12 +102,6 @@ export const evento = {
     mesListaDeEspera: "janeiro",
   },
 
-  videoConvite: {
-    id: process.env.NEXT_PUBLIC_VIDEO_CONVITE_ID ?? "",
-    formato: "9:16" as FormatoVideo,
-    capa: "/images/capa-video.jpg",
-  },
-
   whatsapp: {
     clinicaExibicao: "(28) 99257-4073",
     clinicaE164: "5528992574073",
@@ -132,8 +126,13 @@ export const evento = {
     nome: "Dr. Pablo Santos",
     titulo: "Doutor e Especialista em Implantodontia",
     cro: "CRO-ES 005206",
-    // Parágrafo em primeira pessoa, escrito pelo Dr. Pablo. Vazio: não aparece em produção.
-    textoPessoal: "",
+    // Em primeira pessoa. Rascunho de 10/11/2026: o Dr. Pablo precisa ler e aprovar.
+    // Lista vazia: o bloco não aparece em produção.
+    textoPessoal: [
+      "Eu me formei em Odontologia pela UFES em 2006. Nos primeiros anos de consultório, reparei numa coisa que se repetia: muita gente falava comigo com a mão na frente da boca.",
+      "Eram pessoas que tinham parado de sorrir em foto, que escolhiam o que comer pela dentadura e que já tinham ouvido que era tarde demais. Foi por elas que fui estudar implante. Fiz a especialização em 2013, o doutorado em 2014, e hoje também ensino outros dentistas.",
+      "Depois de mais de 8.000 casos, o que mais me marca ainda é a primeira conversa. A pessoa chega com medo e cheia de dúvidas. Quase sempre, o que ela precisava era de alguém que explicasse com calma o que dá e o que não dá para fazer no caso dela. É isso que eu vou fazer na aula.",
+    ] as string[],
     equipe: [
       { nome: "Dra. Melissa", foto: "/images/dra-melissa.jpg" },
       { nome: "Dra. Mariana", foto: "/images/dra-mariana.jpg" },

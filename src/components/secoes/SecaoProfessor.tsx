@@ -62,8 +62,12 @@ export function SecaoProfessor() {
             ))}
           </dl>
 
-          {textoPessoal ? (
-            <Text>{textoPessoal}</Text>
+          {textoPessoal.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {textoPessoal.map((paragrafo) => (
+                <Text key={paragrafo}>{paragrafo}</Text>
+              ))}
+            </div>
           ) : (
             emDesenvolvimento && (
               <Text className="rounded-control border-2 border-dashed border-error p-3 font-bold text-error">

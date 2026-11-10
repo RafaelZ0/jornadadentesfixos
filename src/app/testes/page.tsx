@@ -34,8 +34,7 @@ const grupos: { titulo: string; paginas: Pagina[] }[] = [
         caminho: "/",
         nome: "Página de inscrição",
         confira:
-          "Contador, vídeo, formulário e barra verde ao rolar. Inscreva-se com o seu número e confira a aba Inscritos.",
-        depende: { rotulo: "Vídeo do Dr. Pablo", pronto: Boolean(evento.videoConvite.id) },
+          "Barra do topo, formulário e barra verde ao rolar. Inscreva-se com o seu número e confira a aba Inscritos.",
       },
       {
         caminho: linkDeTeste,
@@ -124,7 +123,6 @@ const grupos: { titulo: string; paginas: Pagina[] }[] = [
 const fotos = [
   "/images/dr-pablo-hero.jpg",
   "/images/dr-pablo-sobre.jpg",
-  evento.videoConvite.capa,
 ];
 
 export default function TestesPage() {

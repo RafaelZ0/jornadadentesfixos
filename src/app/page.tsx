@@ -10,7 +10,6 @@ import { SecaoProgramacao } from "@/components/secoes/SecaoProgramacao";
 import { SecaoPerguntas } from "@/components/secoes/SecaoPerguntas";
 import { SecaoProfessor } from "@/components/secoes/SecaoProfessor";
 import { SecaoReconhece } from "@/components/secoes/SecaoReconhece";
-import { SecaoVideo } from "@/components/secoes/SecaoVideo";
 import { Heading } from "@/components/ui/Heading";
 import { Text } from "@/components/ui/Text";
 import { dataDaAula, diaDaAula, horaDaAula } from "@/lib/datas";
@@ -23,7 +22,6 @@ export default function Home() {
 
       <SecaoProgramacao />
 
-      <SecaoVideo />
       <SecaoMedos />
       <SecaoReconhece />
       <SecaoPassos />
