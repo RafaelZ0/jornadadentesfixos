@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
-import { Campo, digitarWhatsapp } from "@/components/ui/Campo";
+import { Campo, digitarWhatsapp, ErroCampo } from "@/components/ui/Campo";
 import { evento } from "@/config/evento";
 import { aceitouCookies } from "@/lib/consentimento";
 import { enviarInscricao } from "@/lib/inscricao";
@@ -212,12 +212,9 @@ export function LeadForm() {
           </label>
         </div>
         {erros.consentimento && (
-          <p
-            id={`${idConsentimento}-erro`}
-            className="text-sm leading-[1.4] font-bold text-error"
-          >
+          <ErroCampo id={`${idConsentimento}-erro`}>
             {erros.consentimento}
-          </p>
+          </ErroCampo>
         )}
       </div>
 
@@ -232,9 +229,14 @@ export function LeadForm() {
         />
       </div>
 
-      <Button type="submit" loading={enviando} className="sm:w-full!">
-        Quero me inscrever
-      </Button>
+      <div className="flex flex-col gap-2">
+        <Button type="submit" loading={enviando} className="sm:w-full!">
+          Quero receber o link no WhatsApp
+        </Button>
+        <p className="text-center text-sm leading-[1.4] text-ink-2">
+          É gratuito e sem compromisso.
+        </p>
+      </div>
 
       {erroEnvio && (
         <p role="alert" className="text-sm leading-[1.4] font-bold text-error">

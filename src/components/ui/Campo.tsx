@@ -1,4 +1,4 @@
-import { useId, type ChangeEvent, type ComponentProps } from "react";
+import { useId, type ChangeEvent, type ComponentProps, type ReactNode } from "react";
 import { formatarWhatsapp, somenteDigitos } from "@/lib/whatsapp";
 
 /** Formata o WhatsApp enquanto a pessoa digita, sem pular o cursor. */
@@ -23,6 +23,25 @@ export function digitarWhatsapp(
     }
     campo.setSelectionRange(posicao, posicao);
   });
+}
+
+/** Mensagem de erro logo abaixo do campo, com ícone para não depender só da cor. */
+export function ErroCampo({ id, children }: { id: string; children: ReactNode }) {
+  return (
+    <p
+      id={id}
+      className="flex items-start gap-2 text-sm leading-[1.4] font-bold text-error"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="mt-px size-5 shrink-0 fill-current"
+      >
+        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM13.1 6.5l-.35 6.5h-1.5l-.35-6.5h2.2Z" />
+      </svg>
+      <span>{children}</span>
+    </p>
+  );
 }
 
 export const estiloCampo =
@@ -50,11 +69,7 @@ export function Campo({
         className={estiloCampo}
         {...props}
       />
-      {erro && (
-        <p id={idErro} className="text-sm leading-[1.4] font-bold text-error">
-          {erro}
-        </p>
-      )}
+      {erro && <ErroCampo id={idErro}>{erro}</ErroCampo>}
     </div>
   );
 }
