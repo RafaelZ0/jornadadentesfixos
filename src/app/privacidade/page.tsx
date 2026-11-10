@@ -31,7 +31,7 @@ export default function PrivacidadePage() {
       <BlocoLegal titulo="Quais dados coletamos">
         <ListaLegal
           itens={[
-            "Nome, WhatsApp e cidade, que você informa na inscrição.",
+            "Nome e WhatsApp, que você informa na inscrição, e a cidade, se você quiser informar.",
             "Dados de navegação, como endereço IP, tipo de aparelho, navegador e a página de onde você veio.",
             "Cookies do Meta, a empresa dona do Facebook e do Instagram.",
           ]}
@@ -50,9 +50,10 @@ export default function PrivacidadePage() {
 
       <BlocoLegal titulo="Por que podemos usar">
         <Text>
-          A base legal é o seu consentimento, dado na caixa de aceite do
-          formulário de inscrição. Você pode retirar esse consentimento quando
-          quiser.
+          A base legal é o seu consentimento. Ele é dado quando você envia o
+          formulário de inscrição, que avisa logo abaixo do botão que você
+          concorda em receber as informações da aula pelo WhatsApp e com esta
+          política. Você pode retirar esse consentimento quando quiser.
         </Text>
       </BlocoLegal>
 

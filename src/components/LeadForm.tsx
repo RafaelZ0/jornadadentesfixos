@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
-import { Campo, digitarWhatsapp, ErroCampo } from "@/components/ui/Campo";
+import { Campo, digitarWhatsapp } from "@/components/ui/Campo";
 import { evento } from "@/config/evento";
 import { aceitouCookies } from "@/lib/consentimento";
 import { enviarInscricao } from "@/lib/inscricao";
@@ -15,14 +15,14 @@ import { somenteDigitos, whatsappValido } from "@/lib/whatsapp";
 type Valores = {
   nome: string;
   whatsapp: string;
+  /** Opcional. */
   cidade: string;
-  consentimento: boolean;
 };
 
 type Campo = keyof Valores;
 type Erros = Partial<Record<Campo, string>>;
 
-const CAMPOS: Campo[] = ["nome", "whatsapp", "cidade", "consentimento"];
+const CAMPOS: Campo[] = ["nome", "whatsapp", "cidade"];
 
 function validar(campo: Campo, valores: Valores) {
   switch (campo) {
@@ -32,23 +32,20 @@ function validar(campo: Campo, valores: Valores) {
       if (!valores.whatsapp) return mensagens.whatsappVazio;
       return whatsappValido(valores.whatsapp) ? undefined : mensagens.whatsapp;
     case "cidade":
-      return valores.cidade.trim().length < 2 ? mensagens.cidade : undefined;
-    case "consentimento":
-      return valores.consentimento ? undefined : mensagens.consentimento;
+      return undefined;
   }
 }
 
 export function LeadForm() {
   const router = useRouter();
   const idCidades = useId();
-  const idConsentimento = useId();
+  const idAceite = useId();
   const travado = useRef(false);
 
   const [valores, setValores] = useState<Valores>({
     nome: "",
     whatsapp: "",
     cidade: "",
-    consentimento: false,
   });
   const [erros, setErros] = useState<Erros>({});
   const [tocados, setTocados] = useState<Partial<Record<Campo, boolean>>>({});
@@ -108,7 +105,6 @@ export function LeadForm() {
         nome: valores.nome.trim(),
         whatsapp: somenteDigitos(valores.whatsapp),
         cidade: valores.cidade.trim(),
-        consentimento: true,
         site: robo.value,
         cookies_aceitos: aceitouCookies(),
       });
@@ -164,9 +160,11 @@ export function LeadForm() {
         onBlur={() => aoSair("whatsapp")}
       />
       <Campo
-        rotulo="Cidade"
+        rotulo="Cidade (opcional)"
         name="cidade"
         type="text"
+        required={false}
+        maxLength={120}
         autoComplete="address-level2"
         list={idCidades}
         value={valores.cidade}
@@ -180,44 +178,6 @@ export function LeadForm() {
         ))}
       </datalist>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-start gap-3">
-          <input
-            id={idConsentimento}
-            name="consentimento"
-            type="checkbox"
-            required
-            aria-required="true"
-            aria-invalid={erros.consentimento ? true : undefined}
-            aria-describedby={
-              erros.consentimento ? `${idConsentimento}-erro` : undefined
-            }
-            checked={valores.consentimento}
-            onChange={(e) => atualizar("consentimento", e.target.checked)}
-            className="mt-0.5 size-8 shrink-0 cursor-pointer accent-action"
-          />
-          <label
-            htmlFor={idConsentimento}
-            className="cursor-pointer text-sm leading-[1.5] text-ink"
-          >
-            Aceito receber as informações da aula pelo WhatsApp e li a{" "}
-            <a
-              href={evento.rotas.privacidade}
-              target="_blank"
-              rel="noopener"
-              className="font-bold text-accent underline underline-offset-4"
-            >
-              Política de Privacidade
-            </a>
-          </label>
-        </div>
-        {erros.consentimento && (
-          <ErroCampo id={`${idConsentimento}-erro`}>
-            {erros.consentimento}
-          </ErroCampo>
-        )}
-      </div>
-
       {/* Campo isca: pessoas não veem, robôs preenchem. */}
       <div aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">
         <input
@@ -230,11 +190,30 @@ export function LeadForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Button type="submit" loading={enviando} className="sm:w-full!">
+        <Button
+          type="submit"
+          loading={enviando}
+          aria-describedby={idAceite}
+          className="sm:w-full!"
+        >
           Quero receber o link no WhatsApp
         </Button>
         <p className="text-center text-sm leading-[1.4] text-ink-2">
           É gratuito e sem compromisso.
+        </p>
+        {/* O aceite: quem envia o formulário concorda com este texto. A API grava o registro na planilha. */}
+        <p id={idAceite} className="text-center text-xs leading-[1.5] text-balance text-ink-2">
+          Ao se inscrever, você concorda em receber as informações da aula
+          pelo WhatsApp e com a nossa{" "}
+          <a
+            href={evento.rotas.privacidade}
+            target="_blank"
+            rel="noopener"
+            className="font-bold text-accent underline underline-offset-4"
+          >
+            Política de Privacidade
+          </a>
+          .
         </p>
       </div>
 

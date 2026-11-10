@@ -205,7 +205,7 @@ function gravar_(aba, d) {
     texto_(d.utm_term),
     texto_(d.fbclid),
     texto_(d.url_origem),
-    d.consentimento === true ? 'Sim' : 'Não',
+    consentimento_(d),
     texto_(d.event_id),
   ];
 
@@ -219,6 +219,13 @@ function gravar_(aba, d) {
       .setDataValidation(regraDeStatus_())
       .setValue(STATUS[0]);
   }
+}
+
+// O site manda o registro do aceite ("aceito via texto (inscrição) em ...").
+// Sem ele (versão antiga do site), vale o Sim/Não de antes.
+function consentimento_(d) {
+  if (d.consentimento_registro) return texto_(d.consentimento_registro);
+  return d.consentimento === true ? 'Sim' : 'Não';
 }
 
 // Cada pedido entra na linha 2, logo abaixo do cabeçalho: os mais novos ficam no topo.

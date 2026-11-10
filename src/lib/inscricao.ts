@@ -3,8 +3,8 @@ import type { Origem } from "@/lib/origem";
 export type Inscricao = Origem & {
   nome: string;
   whatsapp: string;
+  /** Opcional: pode ir vazia. */
   cidade: string;
-  consentimento: true;
   /** Campo isca contra robôs. */
   site: string;
   cookies_aceitos: boolean;

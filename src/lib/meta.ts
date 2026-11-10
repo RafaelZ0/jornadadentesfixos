@@ -58,7 +58,10 @@ export async function enviarLeadMeta(lead: LeadMeta) {
     user_data: {
       ph: [hash(lead.whatsapp)],
       fn: [hash(normalizarNome(lead.nome))],
-      ct: [hash(normalizarCidade(lead.cidade))],
+      // Cidade é opcional no formulário: vazia, o campo não vai.
+      ...(normalizarCidade(lead.cidade) && {
+        ct: [hash(normalizarCidade(lead.cidade))],
+      }),
       country: [hash("br")],
       client_ip_address: lead.ip,
       client_user_agent: lead.userAgent,

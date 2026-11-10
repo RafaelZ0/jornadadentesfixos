@@ -63,7 +63,7 @@ export function Campo({
       <input
         id={id}
         required
-        aria-required="true"
+        aria-required={props.required === false ? undefined : true}
         aria-invalid={erro ? true : undefined}
         aria-describedby={erro ? idErro : undefined}
         className={estiloCampo}

@@ -14,8 +14,8 @@ const textoOpcional = z.string().max(500).optional();
 const esquema = z.object({
   nome: z.string().trim().min(2, mensagens.nome).max(120, mensagens.nome),
   whatsapp: z.string().refine(whatsappValido, mensagens.whatsapp),
-  cidade: z.string().trim().min(2, mensagens.cidade).max(120, mensagens.cidade),
-  consentimento: z.literal(true, { error: mensagens.consentimento }),
+  // Opcional: vazia, vai como texto vazio para a planilha.
+  cidade: z.string().trim().max(120, mensagens.cidade).default(""),
   utm_source: textoOpcional,
   utm_medium: textoOpcional,
   utm_campaign: textoOpcional,
@@ -27,7 +27,21 @@ const esquema = z.object({
   cookies_aceitos: z.boolean().optional(),
 });
 
-type Lead = z.infer<typeof esquema> & { event_id: string };
+type Lead = z.infer<typeof esquema> & {
+  event_id: string;
+  consentimento: true;
+  consentimento_registro: string;
+};
+
+// O aceite é o texto abaixo do botão: quem envia o formulário concorda com ele.
+function registroDoAceite() {
+  const quando = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: evento.fusoHorario,
+    dateStyle: "short",
+    timeStyle: "medium",
+  }).format(new Date());
+  return `aceito via texto (inscrição) em ${quando}`;
+}
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
@@ -60,6 +74,9 @@ export async function POST(request: NextRequest) {
     ...validacao.data,
     whatsapp: `55${somenteDigitos(validacao.data.whatsapp)}`,
     event_id,
+    // true mantém o "Sim" no Apps Script antigo; o registro entra quando o script novo for publicado.
+    consentimento: true,
+    consentimento_registro: registroDoAceite(),
   };
 
   if (!(await salvarNaPlanilha(lead))) {
