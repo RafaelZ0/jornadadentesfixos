@@ -1,15 +1,11 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import Image from "next/image";
-import { connection } from "next/server";
-import { Suspense } from "react";
-import { BarraTopo } from "@/components/BarraTopo";
 import { LeadForm } from "@/components/LeadForm";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { Text } from "@/components/ui/Text";
 import { evento } from "@/config/evento";
-import { horaDaVisita } from "@/lib/replay";
 
 const FOTO = "/images/dr-pablo-hero.jpg";
 const temFoto = existsSync(path.join(process.cwd(), "public", FOTO));
@@ -18,46 +14,25 @@ const mostrarFoto = temFoto || process.env.NODE_ENV !== "production";
 
 const { nome } = evento.responsavelTecnico;
 
-// A data muda a cada visita; o resto da página continua estático.
-async function BarraDaVisita() {
-  await connection();
-  return <BarraTopo agoraServidor={horaDaVisita()} />;
-}
-
-// Reserva a mesma altura da barra para a página não pular quando ela chega.
-function BarraReservada() {
-  return (
-    <p
-      aria-hidden="true"
-      className="section-field bg-field px-(--gutter) py-2 text-xs leading-[1.35]"
-    >
-      &nbsp;
-    </p>
-  );
-}
-
 // O formulário fica na primeira tela, como pede o lançamento semente: ninguém precisa rolar para se inscrever.
 export function Hero() {
   return (
     <>
-      <Suspense fallback={<BarraReservada />}>
-        <BarraDaVisita />
-      </Suspense>
+      <p className="section-field bg-field px-(--gutter) py-2 text-center text-xs leading-[1.35] font-bold text-balance text-on-field uppercase">
+        <span className="inline-block">Aula gratuita e ao vivo</span>
+        <span className="hidden sm:inline"> · </span>{" "}
+        <span className="inline-block">Terça, 24/11, às 19h30</span>
+      </p>
 
       <section id="inscricao" className="bg-paper pt-4 pb-10 md:pt-12 md:pb-16">
         <Container className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:gap-x-14 md:gap-y-8">
           <div className="flex flex-col gap-3 md:gap-5">
-            <Heading
-              nivel={1}
-              tamanho="secao"
-              className="md:text-display md:leading-[1.12]"
-            >
-              Usa dentadura? Descubra se você pode ter dentes fixos, mesmo com
-              pouco osso ou mais de 60 anos
+            <Heading nivel={1} tamanho="hero">
+              {evento.promessa}
             </Heading>
             <Text className="md:text-lg md:leading-[1.5]">
-              Aula gratuita e ao vivo com o {nome}. Sem compromisso. O link
-              chega no seu WhatsApp.
+              Na aula gratuita, o {nome} explica os 3 passos para trocar a
+              dentadura por dentes fixos.
             </Text>
           </div>
 
