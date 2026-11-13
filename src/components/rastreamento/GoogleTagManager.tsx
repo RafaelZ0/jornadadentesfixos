@@ -5,7 +5,7 @@ import Script from "next/script";
 import { useEffect, useRef } from "react";
 import { evento } from "@/config/evento";
 import { useAceitouCookies } from "@/lib/consentimento";
-import { enviarEvento, rastreamentoLiberado } from "@/lib/rastreamento";
+import { enviarEvento, useRastreamentoLiberado } from "@/lib/rastreamento";
 import { useLiberarScript } from "./useLiberarScript";
 
 const { id } = evento.googleTagManager;
@@ -16,7 +16,8 @@ const CODIGO_BASE = `window.dataLayer=window.dataLayer||[];function gtag(){dataL
 export function GoogleTagManager() {
   const rota = usePathname();
   const aceitou = useAceitouCookies();
-  const liberado = Boolean(id) && rastreamentoLiberado(aceitou);
+  const rastreamento = useRastreamentoLiberado(aceitou);
+  const liberado = Boolean(id) && rastreamento;
   const carregar = useLiberarScript(liberado);
   const ultimaRota = useRef("");
 
@@ -39,21 +40,5 @@ export function GoogleTagManager() {
         strategy="afterInteractive"
       />
     </>
-  );
-}
-
-/** Para quem está com o JavaScript desligado. Com consentimento obrigatório, não entra: não há como aceitar. */
-export function GoogleTagManagerNoscript() {
-  if (!id || evento.meta.exigeConsentimento) return null;
-
-  return (
-    <noscript>
-      <iframe
-        src={`https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(id)}`}
-        height="0"
-        width="0"
-        style={{ display: "none", visibility: "hidden" }}
-      />
-    </noscript>
   );
 }

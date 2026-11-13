@@ -68,6 +68,10 @@ export const evento = {
     id: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-KLKXFHJ6",
   },
 
+  // Tag Manager e Pixel só carregam neste endereço. No computador e nos previews da Vercel, não.
+  // Trocou de domínio: mude aqui antes de publicar.
+  dominioProducao: "jornadadentesfixos.vercel.app",
+
   // Link curto /aula. proximaLiveUrl só vale quando nenhuma live da lista acima tem link para agora.
   youtube: {
     aulaUrl: process.env.NEXT_PUBLIC_YOUTUBE_LIVE_URL ?? "",

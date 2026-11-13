@@ -33,6 +33,26 @@ Não use o acionador "Alteração no histórico" para o PageView: os botões que
 
 **Essa decisão é do jurídico.** Confirme antes de publicar e ajuste a variável na Vercel.
 
+## Só produção conta
+
+- **Navegador:** o GTM (e com ele o Pixel) só carrega em `evento.dominioProducao` (`src/config/evento.ts`). No computador e nos previews da Vercel, não carrega. Trocou de domínio: mude ali antes de publicar.
+- **Servidor:** a API de Conversões e a planilha olham `VERCEL_ENV`, que a Vercel define. Só `production` grava na planilha de verdade e manda eventos para o pixel.
+
+## Como testar um cadastro (único caminho)
+
+Teste no computador, nunca no site publicado.
+
+1. No `.env.local`, deixe o `META_TEST_EVENT_CODE` com o código da aba **Eventos de teste** do Gerenciador de Eventos. Sem ele, nenhum evento vai para a Meta.
+2. Planilha (opcional): para ver a linha gravada, crie uma cópia da planilha com o mesmo Apps Script e o mesmo `SHEETS_SECRET`, publique e coloque a URL em `GOOGLE_SHEETS_WEBHOOK_URL_TESTE`. Sem ela, nada é gravado e o terminal mostra `PLANILHA_TESTE`.
+3. Rode `npm run dev`, abra `http://localhost:3000` e faça a inscrição com um número fictício.
+4. Confira: a página vai para `/obrigado`; o Lead e o CompleteRegistration aparecem só em **Eventos de teste**; a planilha de produção não muda.
+
+O Pixel do navegador não dispara no computador (o GTM não carrega fora do domínio de produção). Para conferir o par navegador e servidor de um cadastro real, veja a seção abaixo.
+
+## Como validar um cadastro real
+
+No Gerenciador de Eventos, abra o pixel, aba **Visão geral**, evento **Lead** e veja os eventos recebidos. Um cadastro real gera um Lead do **navegador** e um do **servidor** com o mesmo ID de evento, e a Meta mostra os dois como deduplicados. O mesmo vale para o CompleteRegistration.
+
 ## Comandos
 
 First, run the development server:

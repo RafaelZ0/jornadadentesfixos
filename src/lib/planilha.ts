@@ -1,11 +1,20 @@
 // Só no servidor: usa o segredo da planilha.
+import { emProducao } from "@/lib/ambiente";
+
 const TIMEOUT_MS = 8000;
 const TENTATIVAS = 2;
 
 /** Envia um registro para o Apps Script. Devolve false se não conseguiu gravar. */
 export async function salvarNaPlanilha(registro: Record<string, unknown>) {
-  const url = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  // Fora da produção, só grava numa planilha de teste. Sem ela, não grava e segue como se tivesse gravado.
+  const url = emProducao
+    ? process.env.GOOGLE_SHEETS_WEBHOOK_URL
+    : process.env.GOOGLE_SHEETS_WEBHOOK_URL_TESTE;
   const segredo = process.env.SHEETS_SECRET;
+  if (!emProducao && !url) {
+    console.info("PLANILHA_TESTE: fora de produção, registro não gravado");
+    return true;
+  }
   if (!url || !segredo) return false;
 
   for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa += 1) {

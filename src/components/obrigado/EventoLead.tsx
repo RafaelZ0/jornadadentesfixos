@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useAceitouCookies } from "@/lib/consentimento";
 import { idCompleteRegistration } from "@/lib/event-id";
-import { enviarEvento, rastreamentoLiberado } from "@/lib/rastreamento";
+import { enviarEvento, useRastreamentoLiberado } from "@/lib/rastreamento";
 
 function jaEnviou(chave: string) {
   try {
@@ -24,7 +24,7 @@ function marcarEnviado(chave: string) {
 
 export function EventoLead() {
   const eid = useSearchParams().get("eid");
-  const liberado = rastreamentoLiberado(useAceitouCookies());
+  const liberado = useRastreamentoLiberado(useAceitouCookies());
 
   useEffect(() => {
     if (!eid || !liberado) return;

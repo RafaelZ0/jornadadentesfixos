@@ -1,12 +1,11 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible, Literata } from "next/font/google";
 import { AvisoCookies } from "@/components/AvisoCookies";
 import { CapturaOrigem } from "@/components/CapturaOrigem";
 import { Footer } from "@/components/Footer";
-import {
-  GoogleTagManager,
-  GoogleTagManagerNoscript,
-} from "@/components/rastreamento/GoogleTagManager";
+import { GoogleTagManager } from "@/components/rastreamento/GoogleTagManager";
+import { GoogleTagManagerNoscript } from "@/components/rastreamento/GoogleTagManagerNoscript";
 import { evento } from "@/config/evento";
 import "./globals.css";
 
@@ -59,6 +58,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CapturaOrigem />
         <GoogleTagManager />
         <AvisoCookies />
+        {/* Web Analytics da Vercel: conta visitas sem cookies. Precisa estar ligado no painel. */}
+        <Analytics />
       </body>
     </html>
   );

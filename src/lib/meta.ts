@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { evento } from "@/config/evento";
+import { emProducao } from "@/lib/ambiente";
 
 type NomeEvento = "Lead" | "Schedule" | "CompleteRegistration";
 
@@ -51,6 +52,11 @@ export async function enviarLeadMeta(lead: LeadMeta) {
   const token = process.env.META_CAPI_ACCESS_TOKEN;
   if (!pixelId || !token) return;
 
+  // Fora da produção, o evento só vai com o código de teste da Meta (aba Eventos de teste).
+  // Sem o código, não vai: teste no computador ou em preview não entra no pixel de produção.
+  const codigoDeTeste = emProducao ? undefined : process.env.META_TEST_EVENT_CODE;
+  if (!emProducao && !codigoDeTeste) return;
+
   const contexto = {
     event_time: Math.floor(Date.now() / 1000),
     action_source: "website",
@@ -81,9 +87,7 @@ export async function enviarLeadMeta(lead: LeadMeta) {
       event_id: eventId,
       ...contexto,
     })),
-    ...(process.env.META_TEST_EVENT_CODE && {
-      test_event_code: process.env.META_TEST_EVENT_CODE,
-    }),
+    ...(codigoDeTeste && { test_event_code: codigoDeTeste }),
   };
 
   try {

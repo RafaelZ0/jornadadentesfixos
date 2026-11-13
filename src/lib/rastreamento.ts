@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from "react";
 import { evento } from "@/config/evento";
 import { aceitouCookies } from "@/lib/consentimento";
 
@@ -20,8 +21,25 @@ export type EventoGtm =
   | "aula_acesso"
   | "live_acesso";
 
+/** No navegador, só no domínio de produção. No servidor (render), sempre false. */
+export function noDominioDeProducao() {
+  return (
+    typeof window !== "undefined" &&
+    window.location.hostname === evento.dominioProducao
+  );
+}
+
 export function rastreamentoLiberado(aceitou: boolean) {
+  if (!noDominioDeProducao()) return false;
   return !evento.meta.exigeConsentimento || aceitou;
+}
+
+const semMudancas = () => () => {};
+
+/** Para componentes: começa false (como no servidor) e confere o domínio depois de carregar. */
+export function useRastreamentoLiberado(aceitou: boolean) {
+  const dominio = useSyncExternalStore(semMudancas, noDominioDeProducao, () => false);
+  return dominio && (!evento.meta.exigeConsentimento || aceitou);
 }
 
 // Os eventos esperam na fila do dataLayer até o GTM carregar.
