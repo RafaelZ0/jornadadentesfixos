@@ -17,7 +17,14 @@ const passos = [
 ];
 
 /** Corpo comum do /obrigado (logo depois da inscrição) e do /grupo (remarketing de quem não entrou). */
-export function ConteudoGrupo({ topo }: { topo: ReactNode }) {
+export function ConteudoGrupo({
+  topo,
+  antesDosPassos,
+}: {
+  topo: ReactNode;
+  /** Abre a segunda seção, abaixo do botão verde: fora da primeira dobra do celular. */
+  antesDosPassos?: ReactNode;
+}) {
   const { clinicaE164, clinicaExibicao } = evento.whatsapp;
   const linkClinica = `https://wa.me/${clinicaE164}?text=${encodeURIComponent("AULA")}`;
 
@@ -38,6 +45,7 @@ export function ConteudoGrupo({ topo }: { topo: ReactNode }) {
 
       <Section fundo="suave">
         <Container largura="texto" className="flex flex-col gap-10">
+          {antesDosPassos}
           <ol className="flex flex-col gap-5">
             {passos.map((passo, indice) => (
               <li key={passo} className="flex items-center gap-4">

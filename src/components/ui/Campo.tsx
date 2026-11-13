@@ -50,10 +50,18 @@ export const estiloCampo =
 export function Campo({
   rotulo,
   erro,
+  dica,
   ...props
-}: ComponentProps<"input"> & { rotulo: string; erro?: string }) {
+}: ComponentProps<"input"> & {
+  rotulo: string;
+  erro?: string;
+  /** Texto fixo abaixo do campo, como um exemplo de preenchimento. */
+  dica?: string;
+}) {
   const id = useId();
   const idErro = `${id}-erro`;
+  const idDica = `${id}-dica`;
+  const descricao = [dica && idDica, erro && idErro].filter(Boolean).join(" ");
 
   return (
     <div className="flex flex-col gap-2">
@@ -65,10 +73,15 @@ export function Campo({
         required
         aria-required={props.required === false ? undefined : true}
         aria-invalid={erro ? true : undefined}
-        aria-describedby={erro ? idErro : undefined}
+        aria-describedby={descricao || undefined}
         className={estiloCampo}
         {...props}
       />
+      {dica && (
+        <p id={idDica} className="text-sm leading-[1.4] text-ink-2">
+          {dica}
+        </p>
+      )}
       {erro && <ErroCampo id={idErro}>{erro}</ErroCampo>}
     </div>
   );

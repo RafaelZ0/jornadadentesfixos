@@ -43,23 +43,79 @@ function registroDoAceite() {
   return `aceito via texto (inscrição) em ${quando}`;
 }
 
-export async function POST(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  if (excedeuLimite(ip ?? "desconhecido")) {
-    return NextResponse.json({ ok: false }, { status: 429 });
-  }
+const PARAMETROS_DE_ORIGEM = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "fbclid",
+] as const;
 
-  const corpo = await request.json().catch(() => null);
-  if (typeof corpo !== "object" || corpo === null) {
-    return NextResponse.json({ ok: false }, { status: 400 });
+/** Envio sem JavaScript: a origem (UTMs e fbclid) vem do endereço da página em que a pessoa estava. */
+function origemDaPagina(referer: string | null) {
+  if (!referer) return {};
+  try {
+    const url = new URL(referer);
+    const origem: Record<string, string | number> = { url_origem: referer.slice(0, 2000) };
+    for (const parametro of PARAMETROS_DE_ORIGEM) {
+      const valor = url.searchParams.get(parametro);
+      if (valor) origem[parametro] = valor.slice(0, 500);
+    }
+    if (origem.fbclid) origem.fbclid_em = Date.now();
+    return origem;
+  } catch {
+    return {};
   }
+}
+
+async function lerCorpo(request: NextRequest, nativo: boolean) {
+  if (!nativo) return request.json().catch(() => null);
+
+  const dados = await request.formData().catch(() => null);
+  if (!dados) return null;
+  const texto = (campo: string) => String(dados.get(campo) ?? "");
+  return {
+    ...origemDaPagina(request.headers.get("referer")),
+    nome: texto("nome"),
+    whatsapp: somenteDigitos(texto("whatsapp")),
+    cidade: texto("cidade"),
+    site: texto("site"),
+    cookies_aceitos: false,
+  };
+}
+
+export async function POST(request: NextRequest) {
+  // Formulário enviado pelo navegador antes de o JavaScript carregar: responde com redirecionamento,
+  // não com JSON. 303 faz o navegador abrir o destino com GET.
+  const tipo = request.headers.get("content-type") ?? "";
+  const nativo =
+    tipo.includes("application/x-www-form-urlencoded") ||
+    tipo.includes("multipart/form-data");
+
+  const sucesso = (eventId: string) =>
+    nativo
+      ? NextResponse.redirect(
+          new URL(`/obrigado?eid=${encodeURIComponent(eventId)}`, request.url),
+          303,
+        )
+      : NextResponse.json({ ok: true, eventId });
+
+  const falha = (status: number, erros?: Record<string, string | undefined>) =>
+    nativo
+      ? NextResponse.redirect(new URL("/?inscricao=erro#inscricao", request.url), 303)
+      : NextResponse.json({ ok: false, ...(erros && { erros }) }, { status });
+
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (excedeuLimite(ip ?? "desconhecido")) return falha(429);
+
+  const corpo = await lerCorpo(request, nativo);
+  if (typeof corpo !== "object" || corpo === null) return falha(400);
 
   const event_id = randomUUID();
 
   // Campo isca preenchido: parece sucesso para o robô, mas nada é gravado.
-  if ("site" in corpo && corpo.site) {
-    return NextResponse.json({ ok: true, eventId: event_id });
-  }
+  if ("site" in corpo && corpo.site) return sucesso(event_id);
 
   const validacao = esquema.safeParse(corpo);
   if (!validacao.success) {
@@ -67,7 +123,7 @@ export async function POST(request: NextRequest) {
     const erros = Object.fromEntries(
       Object.entries(campos).map(([campo, lista]) => [campo, lista?.[0]]),
     );
-    return NextResponse.json({ ok: false, erros }, { status: 400 });
+    return falha(400, erros);
   }
 
   const lead: Lead = {
@@ -110,5 +166,5 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({ ok: true, eventId: event_id });
+  return sucesso(event_id);
 }

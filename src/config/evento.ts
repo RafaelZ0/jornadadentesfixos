@@ -6,6 +6,18 @@ export const evento = {
   nome: "Jornada dos Dentes Fixos: Seu Sorriso Transformado",
   nomeCurto: "Jornada dos Dentes Fixos",
   promessa: "Devolva o seu sorriso por meio dos dentes fixos",
+
+  // Primeira tela da página de inscrição. Para voltar ao título antigo (a promessa) sem mexer no
+  // código: na Vercel, NEXT_PUBLIC_TITULO_PRIMEIRA_TELA=promessa e um novo deploy.
+  primeiraTela: {
+    titulo:
+      process.env.NEXT_PUBLIC_TITULO_PRIMEIRA_TELA === "promessa"
+        ? ("promessa" as const)
+        : ("aula" as const),
+    linhaAcima: "Para quem usa dentadura ou perdeu dentes",
+    tituloAula: "Aula gratuita: como trocar a dentadura por dentes fixos",
+    chamadaFormulario: "Preencha para receber o link da aula",
+  },
   fusoHorario: "America/Sao_Paulo",
 
   aula: {

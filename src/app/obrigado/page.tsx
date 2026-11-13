@@ -18,10 +18,11 @@ export default function ObrigadoPage() {
         <EventoLead />
       </Suspense>
 
+      {/* Acima da dobra no celular: só o título, a frase e o botão verde. */}
       <ConteudoGrupo
-        topo={
+        topo={<TituloObrigado />}
+        antesDosPassos={
           <>
-            <TituloObrigado />
             <div
               role="progressbar"
               aria-label="Sua inscrição"

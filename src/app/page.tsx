@@ -12,6 +12,7 @@ import { SecaoProfessor } from "@/components/secoes/SecaoProfessor";
 import { SecaoReconhece } from "@/components/secoes/SecaoReconhece";
 import { Heading } from "@/components/ui/Heading";
 import { Text } from "@/components/ui/Text";
+import { evento } from "@/config/evento";
 import { dataDaAula, diaDaAula, horaDaAula } from "@/lib/datas";
 
 export default function Home() {
@@ -31,7 +32,12 @@ export default function Home() {
       <SecaoPerguntas />
 
       <SecaoInscricao id="inscricao-final">
-        <Heading nivel={2}>Seu novo sorriso começa com informação</Heading>
+        {/* Com o título novo no topo, a promessa vem para o fechamento. Com o antigo, ela já está no topo. */}
+        <Heading nivel={2}>
+          {evento.primeiraTela.titulo === "aula"
+            ? evento.promessa
+            : "Seu novo sorriso começa com informação"}
+        </Heading>
         <Text tipo="abertura" className="mt-4 font-display font-semibold">
           {diaDaAula}, {dataDaAula}, às {horaDaAula}
         </Text>

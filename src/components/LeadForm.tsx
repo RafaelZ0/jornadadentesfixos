@@ -1,7 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { Button } from "@/components/ui/Button";
 import { Campo, digitarWhatsapp } from "@/components/ui/Campo";
 import { evento } from "@/config/evento";
@@ -36,8 +43,26 @@ function validar(campo: Campo, valores: Valores) {
   }
 }
 
-export function LeadForm() {
+const semMudancas = () => () => {};
+
+// A rota de inscrição devolve para /?inscricao=erro quando o envio sem JavaScript não passa.
+const voltouComErro = () =>
+  new URLSearchParams(window.location.search).get("inscricao") === "erro";
+
+type LeadFormProps = {
+  /** Frase acima dos campos, como "Preencha para receber o link da aula". */
+  chamada?: string;
+  /** Formulário do topo: é ele que mostra o erro de um envio sem JavaScript. */
+  principal?: boolean;
+};
+
+export function LeadForm({ chamada, principal = false }: LeadFormProps) {
   const router = useRouter();
+  const retornoComErro = useSyncExternalStore(
+    semMudancas,
+    () => principal && voltouComErro(),
+    () => false,
+  );
   const idCidades = useId();
   const idAceite = useId();
   const travado = useRef(false);
@@ -130,37 +155,45 @@ export function LeadForm() {
   }
 
   return (
+    // Com JavaScript, o aoEnviar cuida de tudo. Antes de ele carregar, o navegador manda por POST para a
+    // mesma rota, que redireciona para /obrigado. Nome e telefone vão no corpo, nunca na URL.
     <form
       data-lead-form
       noValidate
+      action="/api/inscricao"
+      method="post"
       onSubmit={aoEnviar}
       className="relative flex flex-col gap-5"
     >
+      {chamada && (
+        <h2 className="font-display text-title leading-[1.25] font-semibold text-ink">
+          {chamada}
+        </h2>
+      )}
       <Campo
-        rotulo="Nome"
+        rotulo="Seu nome"
         name="nome"
         type="text"
         autoComplete="name"
-        placeholder="Seu nome"
         value={valores.nome}
         erro={erros.nome}
         onChange={(e) => atualizar("nome", e.target.value)}
         onBlur={() => aoSair("nome")}
       />
       <Campo
-        rotulo="WhatsApp com DDD"
+        rotulo="Seu WhatsApp com DDD"
         name="whatsapp"
         type="tel"
         inputMode="tel"
         autoComplete="tel-national"
-        placeholder="(28) 99999-9999"
+        dica="Exemplo: (28) 99999-0000"
         value={valores.whatsapp}
         erro={erros.whatsapp}
         onChange={aoDigitarWhatsapp}
         onBlur={() => aoSair("whatsapp")}
       />
       <Campo
-        rotulo="Cidade (opcional)"
+        rotulo="Sua cidade (opcional)"
         name="cidade"
         type="text"
         required={false}
@@ -199,7 +232,7 @@ export function LeadForm() {
           Quero receber o link no WhatsApp
         </Button>
         <p className="text-center text-sm leading-[1.4] text-ink-2">
-          É gratuito e sem compromisso.
+          É gratuito e sem compromisso. Não pedimos pagamento.
         </p>
         {/* O aceite: quem envia o formulário concorda com este texto. A API grava o registro na planilha. */}
         <p id={idAceite} className="text-center text-xs leading-[1.5] text-balance text-ink-2">
@@ -217,7 +250,7 @@ export function LeadForm() {
         </p>
       </div>
 
-      {erroEnvio && (
+      {(erroEnvio || (retornoComErro && !enviando)) && (
         <p role="alert" className="text-sm leading-[1.4] font-bold text-error">
           Não conseguimos enviar. Confira seu WhatsApp e tente de novo.{" "}
           <a
