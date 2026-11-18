@@ -7,6 +7,10 @@ const PARAMETROS = [
   "utm_content",
   "utm_term",
   "fbclid",
+  // Clique do Google Ads (codificação automática). gbraid e wbraid vêm no lugar do gclid em alguns iPhones.
+  "gclid",
+  "gbraid",
+  "wbraid",
 ] as const;
 
 export type Origem = Partial<Record<(typeof PARAMETROS)[number], string>> & {

@@ -22,6 +22,9 @@ const esquema = z.object({
   utm_content: textoOpcional,
   utm_term: textoOpcional,
   fbclid: textoOpcional,
+  gclid: textoOpcional,
+  gbraid: textoOpcional,
+  wbraid: textoOpcional,
   url_origem: z.string().max(2000).optional(),
   fbclid_em: z.number().int().positive().optional(),
   cookies_aceitos: z.boolean().optional(),
@@ -50,9 +53,12 @@ const PARAMETROS_DE_ORIGEM = [
   "utm_content",
   "utm_term",
   "fbclid",
+  "gclid",
+  "gbraid",
+  "wbraid",
 ] as const;
 
-/** Envio sem JavaScript: a origem (UTMs e fbclid) vem do endereço da página em que a pessoa estava. */
+/** Envio sem JavaScript: a origem (UTMs, fbclid e gclid) vem do endereço da página em que a pessoa estava. */
 function origemDaPagina(referer: string | null) {
   if (!referer) return {};
   try {

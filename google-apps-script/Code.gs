@@ -24,10 +24,15 @@ var COLUNAS = [
   'event_id',
   'Status do contato',
   'Observação',
+  // Clique do Google Ads. Ficam no fim para não mexer nas colunas que a equipe já usa.
+  'gclid',
+  'gbraid',
+  'wbraid',
 ];
 
 var COLUNA_WHATSAPP = COLUNAS.indexOf('WhatsApp') + 1;
 var COLUNA_STATUS = COLUNAS.indexOf('Status do contato') + 1;
+var COLUNA_GCLID = COLUNAS.indexOf('gclid') + 1;
 var STATUS = ['Novo', 'Em contato', 'Sem resposta', 'Não quer'];
 
 var ABA_VAGAS = 'Vagas';
@@ -217,6 +222,12 @@ function gravar_(aba, d) {
   // Formato de texto antes de gravar: o WhatsApp não vira número.
   aba.getRange(linha, 1, 1, COLUNAS.length).setNumberFormat('@');
   aba.getRange(linha, 1, 1, valores.length).setValues([valores]);
+  // Inscrição repetida sem clique do Google não apaga o clique guardado antes.
+  var cliqueGoogle = [texto_(d.gclid), texto_(d.gbraid), texto_(d.wbraid)];
+  if (cliqueGoogle.join('')) {
+    aba.getRange(linha, COLUNA_GCLID, 1, 3).setValues([cliqueGoogle]);
+    garantirCabecalhoGoogle_(aba);
+  }
 
   if (nova) {
     aba
@@ -224,6 +235,17 @@ function gravar_(aba, d) {
       .setDataValidation(regraDeStatus_())
       .setValue(STATUS[0]);
   }
+}
+
+// Planilhas criadas antes destas colunas: o cabeçalho entra na primeira inscrição.
+function garantirCabecalhoGoogle_(aba) {
+  var cabecalho = aba.getRange(1, COLUNA_GCLID, 1, 3);
+  if (cabecalho.getValues()[0][0] === 'gclid') return;
+  cabecalho
+    .setValues([['gclid', 'gbraid', 'wbraid']])
+    .setFontWeight('bold')
+    .setBackground('#23413a')
+    .setFontColor('#fbf7f0');
 }
 
 // O site manda o registro do aceite ("aceito via texto (inscrição) em ...").
